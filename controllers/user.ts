@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from 'express';
 import User from '../database/models/User';
-import bcrypt from "bcrypt";
+import jwt from 'jsonwebtoken';
 
 export default {
-    register: async (req: Request, res: Response) => {  
+    register: async (req: Request, res: Response, next: NextFunction) => {
         const { email, password } = req.body;
 
         try {
@@ -25,17 +25,11 @@ export default {
 
         try {
 
-            const salt: string = bcrypt.genSaltSync(10);
+            const newUser = new User({ email, });
+            // @ts-ignore TODO
+            await User.register(newUser, password)
 
-            const newUser = new User({
-                email,
-                password: bcrypt.hashSync(password, salt),
-            });
 
-            newUser.save((err) => {
-                if (err) throw err;
-
-            });
             return res.status(201).json({
                 status: `succes`,
                 msg: `success register user with email ${email}.`,
@@ -52,6 +46,17 @@ export default {
     },
 
     login: async (req: Request, res: Response) => {
-        return res.end('login');
+
+        const token = jwt.sign(
+            // @ts-ignore TODO
+            { id: req.user._id }, 
+            String(process.env.JWT_SECRET), 
+            {expiresIn: 1000*60*8} //8hours
+            )
+
+        return res.status(200).json({
+            status: 'success',
+            token,
+        });
     }
 }

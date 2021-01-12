@@ -4,6 +4,9 @@ import express from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import mongoose from 'mongoose';
+import passportConfig from "./helpers/passportConfig";
+
+passportConfig();
 
 try {
     mongoose.connect(String(process.env.DATABASE_ADRESS), { useNewUrlParser: true, useUnifiedTopology: true })
