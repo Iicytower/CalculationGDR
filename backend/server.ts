@@ -1,22 +1,22 @@
-import * as dotenv from "dotenv"; dotenv.config();
-
 import express from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import mongoose from 'mongoose';
 import passportConfig from "./helpers/passportConfig";
 
-passportConfig();
-
 try {
-    mongoose.connect(String(process.env.DATABASE_ADRESS), { useNewUrlParser: true, useUnifiedTopology: true })
+    const dburl = "mongodb+srv://admin:admin123@cluster0.ewwpc.mongodb.net/calculationgdr?retryWrites=true&w=majority";
+
+    mongoose.connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true })
         .then(() => console.log('connected to database'))
         .catch(err => console.log('error ', err))
-    
+
 } catch (err) {
     console.log("problem with connect to database");
     throw err;
 }
+
+passportConfig();
 
 const app: express.Application = express();
 

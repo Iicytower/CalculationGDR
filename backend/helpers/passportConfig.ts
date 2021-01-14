@@ -5,9 +5,8 @@ import User from '../database/models/User';
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
 
-
 function verifyCallback(payload: any, done: any) {
-    return User.findOne({_id: payload.id})
+    return User.findOne({ _id: payload.id })
         .then(user => done(null, user))
         .catch(err => done(err));
 }
@@ -15,7 +14,7 @@ function verifyCallback(payload: any, done: any) {
 export default () => {
     const config = {
         jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-        secretOrKey: process.env.JWT_SECRET
+        secretOrKey: String(process.env.JWT_SECRET),
     };
 
     // @ts-ignore TODO

@@ -1,0 +1,42 @@
+version: '3.4'
+
+services:
+  backend:
+    image: calculationgdrback
+    environment: 
+      - DATABASE_ADRESS='mongodb+srv://admin:admin123@cluster0.ewwpc.mongodb.net/calculationgdr?retryWrites=true&w=majority'
+      - PORT=3000
+      - NODE_ENV='development'
+      - SECRET='keyboard cat'
+      - JWT_SECRET='r2scxb2UGGjarY6Y'
+    build:
+      context: ./backend
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+      - /app/node_modules
+  # database:
+  #   image: mongo:latest
+  #   container_name: 'mongodb'
+  #   ports:
+  #     - 27017:27017
+  #   environment:
+  #     - MONGO_INITDB_DATABASE=calculationgdr
+  #     - MONGO_INITDB_ROOT_USERNAME=root
+  #     - MONGO_INITDB_ROOT_PASSWORD=example
+  #   volumes:
+  #     - data:/data/db
+  client:
+    image: calculationgdrfront
+    build: 
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
+    volumes: 
+      - .:/app
+
+volumes:
+  data:
