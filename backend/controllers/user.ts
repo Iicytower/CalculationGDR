@@ -4,15 +4,15 @@ import jwt from 'jsonwebtoken';
 
 export default {
     register: async (req: Request, res: Response, next: NextFunction) => {
-        const { email, password } = req.body;
+        const { nickname, password } = req.body;
 
         try {
 
-            const isExist = await User.findOne({ email });
+            const isExist = await User.findOne({ nickname });
 
             if (isExist) return res.status(200).json({
                 status: "failure",
-                msg: `User with email ${email} exist. Use diffrent adress.`
+                msg: `User with nickname ${nickname} exist. Use diffrent.`
             });
 
         } catch (err) {
@@ -25,14 +25,14 @@ export default {
 
         try {
 
-            const newUser = new User({ email, });
+            const newUser = new User({ nickname, });
             // @ts-ignore TODO
             await User.register(newUser, password)
 
 
             return res.status(201).json({
                 status: `succes`,
-                msg: `success register user with email ${email}.`,
+                msg: `success register user with nickname ${nickname}.`,
             });
 
         } catch (err) {
@@ -56,6 +56,7 @@ export default {
 
         return res.status(200).json({
             status: 'success',
+            msg: 'succesfully login',
             token,
         });
     }

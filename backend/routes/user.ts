@@ -4,7 +4,6 @@ import * as bodyParser from 'body-parser';
 import validator from "../middlewares/validator";
 import { check } from "express-validator";
 import passport from "passport";
-import jwtAuth from '../middlewares/auth';
 
 import userCon from "../controllers/user"
 
@@ -13,11 +12,13 @@ const regexpPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[\!\@\#\$\%\^\&\*\(\)])(?=.*[A-
 router.post("/register",
     bodyParser.json(),
     [
-        check("email")
-            .isEmail()
-            .trim(),
+        check("nickname")
+            .isString()
+            .trim()
+            .notEmpty(),
         check("password")
             .isString()
+            .notEmpty()
         // .matches(regexpPassword),
     ],
     validator(),
@@ -26,8 +27,12 @@ router.post("/register",
 router.post("/login",
     bodyParser.json(),
     [
-        check("email").isEmail(),
-        check("password").isString(),
+        check("nickname")
+            .isString()
+            .notEmpty(),
+        check("password")
+            .isString()
+            .notEmpty(),
     ],
     validator(),
     passport.authenticate('local', { session: false, }),

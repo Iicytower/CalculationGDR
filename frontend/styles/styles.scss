@@ -1,0 +1,33 @@
+body {
+    margin: 0;
+    padding: 0px 60px;
+    background-color: #29201B;
+    color: #efefef;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 17px;
+    display: flex;
+}
+
+.container {
+    display: flex;
+    margin: auto;
+    margin-top: 100px;
+    padding: auto;
+    align-items: center;
+    flex-direction: column;
+}
+
+.mainPiece{
+    justify-content: space-around;
+    padding: 10px;
+    align-items: center;
+}
+
+.form{
+    display: flex;
+    flex-direction: row;
+}
+
+.response{
+    margin: auto;
+}
