@@ -8,30 +8,16 @@ loginBtn.addEventListener("click", async () => {
     nickname: document.querySelector("#loginNickname").value,
     password: document.querySelector("#loginPassword").value,
   };
-  console.log(formValues);
+
   const res = await fetch(`${adress}/user/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(formValues),
-  })
-    .then((data) => data.json())
-    // .catch(e => "Something goes wrong, please try again.")
-    .catch((e) => console.error("Error: " + e));
-
-  if(!!res.errors){
-    response.innerText = 
-    `Enter correct nickname and password. Password must contain small and big letter, digit and minimum one special character. Available characters: ! @ # $ % ^ & * ( )`;
-  }
-
-  if (!!res.token) {
-    response.innerText = res.msg;
-  }
-
-  if(!res.token){
-    response.innerText = "Something goes wrong try again";
-  }
+  });
+  
+  console.log(res);
 });
 
 registerBtn.addEventListener("click", async () => {
@@ -46,11 +32,7 @@ registerBtn.addEventListener("click", async () => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(formValues),
-  })
-    .then((data) => data.json())
-    .then((data) => data.msg)
-    // .catch(e => "Something goes wrong, please try again.")
-    .catch((e) => console.error("error: " + e));
+  });
 
-  response.innerText = res;
+  console.log(res);
 });

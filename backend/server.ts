@@ -24,7 +24,9 @@ const app: express.Application = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:8080",
+}));
 
 import indexRouter from "./routes/index";
 app.use("/", indexRouter);

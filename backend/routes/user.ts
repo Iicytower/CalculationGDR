@@ -7,19 +7,15 @@ import passport from "passport";
 
 import userCon from "../controllers/user"
 
-const regexpPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[\!\@\#\$\%\^\&\*\(\)])(?=.*[A-Z])(?!.*\s).{8,}$/g;
-
 router.post("/register",
     bodyParser.json(),
     [
         check("nickname")
             .isString()
-            .trim()
             .notEmpty(),
         check("password")
             .isString()
             .notEmpty()
-        // .matches(regexpPassword),
     ],
     validator(),
     userCon.register);

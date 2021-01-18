@@ -5,17 +5,27 @@ import jwt from 'jsonwebtoken';
 export default {
     register: async (req: Request, res: Response, next: NextFunction) => {
         const { nickname, password } = req.body;
-
+        
         try {
+
+            const regexpPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[\!\@\#\$\%\^\&\*\(\)])(?=.*[A-Z])(?!.*\s).{8,}$/g;
+            const isPasswordCorrect = regexpPassword.test(password);
+
+            if(!isPasswordCorrect){
+                return res.status(400).json({
+                    status: "failure",
+                    msg: "Password must contain small and big letter, digit and minimum one special character. Available characters: ! @ # $ % ^ & * ( )"
+                })
+            }
 
             const isExist = await User.findOne({ nickname });
 
-            if (isExist) return res.status(200).json({
+            if (isExist) return res.status(400).json({
                 status: "failure",
                 msg: `User with nickname ${nickname} exist. Use diffrent.`
             });
 
-        } catch (err) {
+        } catch (err){
             console.error(err);
             return res.status(500).json({
                 status: `failure`,
@@ -35,7 +45,7 @@ export default {
                 msg: `success register user with nickname ${nickname}.`,
             });
 
-        } catch (err) {
+        } catch (err){
             console.error(err);
             return res.status(500).json({
                 status: `failure`,
