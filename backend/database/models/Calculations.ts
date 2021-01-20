@@ -28,7 +28,6 @@ const CalculationSchema = new Schema({
         pricePerMeter: Number,
     },
     workPerDay: {
-        is: Boolean,
         works: [{
             name: String,
             materials: [{
