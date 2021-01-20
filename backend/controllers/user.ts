@@ -36,9 +36,8 @@ export default {
         try {
 
             const newUser = new User({ nickname, });
-            // @ts-ignore TODO
-            await User.register(newUser, password)
 
+            await User.register(newUser, password)
 
             return res.status(201).json({
                 status: `succes`,
@@ -57,9 +56,15 @@ export default {
 
     login: async (req: Request, res: Response) => {
 
+        if(req.user === undefined) return res.status(500);
+        
+        interface User {
+            _id?: String,
+        }
+        const usr: User = req.user
+
         const token = jwt.sign(
-            // @ts-ignore TODO
-            { id: req.user._id }, 
+            { id: usr._id }, 
             String(process.env.JWT_SECRET), 
             {expiresIn: 1000*60*8} //8hours
             )

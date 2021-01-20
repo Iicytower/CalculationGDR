@@ -41,6 +41,7 @@ const CalculationSchema = new Schema({
             }],
             materialsSumPrice: Number,
             sumOfWorkingDays: Number,
+            personsQuantity: Number,
         }],
         totalSumOfWorkingDays: Number,
         moneyOfTheDay: Number,

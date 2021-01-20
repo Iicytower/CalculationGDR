@@ -21,6 +21,7 @@ interface Works {
     activities: Activities[],
     materialsSumPrice: Number,
     sumOfWorkingDays: Number,
+    personsQuantity: Number,
 }
 
 interface WorkPerMeter {

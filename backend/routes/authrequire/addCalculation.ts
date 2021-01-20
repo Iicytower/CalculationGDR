@@ -40,6 +40,9 @@ router.post('/',
         check("workPerDay.works.*.activities.").optional().isArray(),
         check("workPerDay.works.*.activities.*.name").optional().isString(),
         check("workPerDay.works.*.activities.*.numberOfWorkingDays").optional().isFloat(),
+        check("workPerDay.works.*.materialsSumPrice").optional().isFloat(),
+        check("workPerDay.works.*.sumOfWorkingDays").optional().isFloat(),
+        check("workPerDay.works.*.personsQuantity").optional().isInt(),
         check("workPerDay.totalSumOfWorkingDays").optional().isFloat(),
         check("workPerDay.moneyOfTheDay").optional().isFloat(),
         
@@ -50,9 +53,15 @@ router.post('/',
         switch (useMethod) {
             case 'perDay':
                 if (workPerDay !== undefined && workPerMeter === undefined) next()
+                else return res.status(400).json({
+                    msg: "You can use workPerDay OR workPerMeter. Both is not possible."
+                });
                 break;
             case 'perMeter':
                 if (workPerMeter !== undefined && workPerDay === undefined) next()
+                else return res.status(400).json({
+                    msg: "You can use workPerDay OR workPerMeter. Both is not possible."
+                });
                 break;
             default:
                 return res.status(400).json({
@@ -61,22 +70,6 @@ router.post('/',
                 break;
         }
     },
-    checkSchema({
-        name: {
-            isString: true,
-        },
-        useMethod: {
-            isIn: {
-                options: ["perDay", "perMeter"]
-            },
-        },
-        workPerMeter: {
-            optional: { options: { nullable: true }, },
-            
-        },
-
-
-    }),
     addCalculation);
 
 

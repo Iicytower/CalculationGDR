@@ -17,7 +17,6 @@ export default () => {
         secretOrKey: String(process.env.JWT_SECRET),
     };
 
-    // @ts-ignore TODO
     passport.use(User.createStrategy());
     passport.use(new JWTStrategy(config, verifyCallback));
 }

@@ -10,11 +10,16 @@ export default async (req: Request, res: Response) => {
     if (req.user === undefined) return res.status(401).json({
         msg: "Unauthorized",
     })
-    //@ts-ignore TODO
-    const currentUser: string = req.user._id
+
+    interface User {
+        _id?: String,
+    }
+
+    const currentUser: User = req.user
+
     const data: CalculationInterface = {
         name,
-        owner: currentUser,
+        owner: currentUser._id,
         useMethod,
     };
 
