@@ -6,7 +6,7 @@ import { Request, Response, NextFunction } from 'express';
 
 const router = Router();
 
-import addCalculation from '../../controllers/authrequire/addCalculation';
+import addQuotation from '../../controllers/authrequire/addQuotation';
 
 
 router.post('/',
@@ -70,7 +70,7 @@ router.post('/',
                 break;
         }
     },
-    addCalculation);
+    addQuotation);
 
 
 export default router;

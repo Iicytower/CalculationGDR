@@ -1,9 +1,7 @@
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
 import { Request, Response } from "express";
-import { Collection } from "mongoose";
 
-import Calculation from '../../database/models/Calculations'
-import { CalculationInterface } from "../../helpers/interfaces";
+import Quotation from '../../database/models/Quotations'
+import { QuotationInterface } from "../../helpers/interfaces";
 
 export default async (req: Request, res: Response) => {
 
@@ -17,7 +15,7 @@ export default async (req: Request, res: Response) => {
         _id?: String,
     }
     const currentUser: User = req.user
-    const data: CalculationInterface = {
+    const data: QuotationInterface = {
         name,
         owner: currentUser._id,
         useMethod,
@@ -28,19 +26,19 @@ export default async (req: Request, res: Response) => {
 
     try {
 
-        const isExist = await Calculation.findOne({
+        const isExist = await Quotation.findOne({
             name,
             owner: currentUser._id,
         })
 
         if (!!isExist) {
             return res.status(200).json({
-                mgs: `You already have a calculation with name ${name}`
+                mgs: `You already have a Quotation with name ${name}`
             })
         }
 
         
-        const calc = new Calculation(data);
+        const calc = new Quotation(data);
         const dbRes = await calc.save();
 
         //TODO handle database error
@@ -52,16 +50,16 @@ export default async (req: Request, res: Response) => {
         // });
         //
         //alternative
-        // const dbRes = await Calculation.create(data);
+        // const dbRes = await Quotation.create(data);
 
         return res.status(201).json({
-            msg: 'Calculation is added'
+            msg: 'Quotation is added'
         });
     } catch (err) {
         console.error(err);
         return res.status(500).json({
             status: `failure`,
-            msg: "Something goes wrong with addCalculation"
+            msg: "Something goes wrong with addQuotation"
         });
     }
 }

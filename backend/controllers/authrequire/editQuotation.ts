@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Calculation from '../../database/models/Calculations';
+import Quotation from '../../database/models/Quotations';
 
 export default async (req: Request, res: Response) => {
 
@@ -15,13 +15,13 @@ export default async (req: Request, res: Response) => {
 
    if(String(currentUser._id) !== String(data.owner)){
       return res.status(401).json({
-         msg: "It is not your calculation. Access denied."
+         msg: "It is not your Quotation. Access denied."
       })
    }
 
    try {
 
-      const doc = await Calculation.findOne({
+      const doc = await Quotation.findOne({
          _id: data._id,
          owner: currentUser._id,
       })
@@ -37,20 +37,20 @@ export default async (req: Request, res: Response) => {
          doc.workPerMeter = data.workPerMeter;
       }else{
          return res.status(404).json({
-            msg: "calculation not found",
+            msg: "Quotation not found",
          });
       }
       //TODO handle error
       const dbRes = await doc.save();
    
       return res.status(200).json({
-         msg: "calculation edited",
+         msg: "Quotation edited",
       });
       
    } catch (err) {
       console.error(err);
       return res.status(500).json({
-         msg: "there is a problem with edit calculation"
+         msg: "there is a problem with edit Quotation"
       });
    }
 

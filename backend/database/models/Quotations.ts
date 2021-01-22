@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
 
-const CalculationSchema = new Schema({
+const QuotationSchema = new Schema({
     name: {
         required: true,
         type: String,
@@ -54,4 +54,4 @@ const CalculationSchema = new Schema({
     timestamps: true,
 });
 
-export default model('Calculation', CalculationSchema);;
+export default model('Quotation', QuotationSchema);;

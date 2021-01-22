@@ -5,7 +5,7 @@ import { check } from "express-validator";
 
 const router = Router();
 
-import delCalculation from '../../controllers/authrequire/delCalculation';
+import delQuotation from '../../controllers/authrequire/delQuotation';
 
 router.delete('/', 
 bodyParser.json(),
@@ -14,7 +14,7 @@ bodyParser.json(),
    check("owner").isString(),
 ],
 validator(),
-delCalculation);
+delQuotation);
 
 
 export default router;

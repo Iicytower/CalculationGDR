@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Calculation from '../../database/models/Calculations';
+import Quotation from '../../database/models/Quotations';
 
 export default async (req: Request, res: Response) => {
   try {
@@ -13,7 +13,7 @@ export default async (req: Request, res: Response) => {
 
     const currentUser: User = req.user
 
-    const data = await Calculation.find({
+    const data = await Quotation.find({
       owner: currentUser._id,
     });
 

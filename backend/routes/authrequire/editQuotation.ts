@@ -5,7 +5,7 @@ import { check } from "express-validator";
 
 const router = Router();
 
-import addCalculation from '../../controllers/authrequire/editCalculation';
+import addQuotation from '../../controllers/authrequire/editQuotation';
 
 
 router.put('/', 
@@ -49,7 +49,7 @@ bodyParser.json(),
    
 ],
 validator(),
-addCalculation);
+addQuotation);
 
 
 export default router;

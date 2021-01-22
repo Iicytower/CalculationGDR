@@ -37,7 +37,7 @@ interface WorkPerDay {
     moneyOfTheDay: Number,
 }
 
-export interface CalculationInterface {
+export interface QuotationInterface {
     name: String,
     owner?: String,
     useMethod: "perDay" | "perMeter",
