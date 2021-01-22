@@ -6,8 +6,8 @@ import cors from 'cors';
 import passportConfig from "./helpers/passportConfig";
 
 try {
-    const dburl = "mongodb+srv://admin:admin123@cluster0.ewwpc.mongodb.net/calculationgdr?retryWrites=true&w=majority";
-
+    //TODO adress from eviroment variables
+    const dburl: string = 'mongodb+srv://admin:admin123@cluster0.ewwpc.mongodb.net/calculationgdr?retryWrites=true&w=majority';
     mongoose.connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true })
         .then(() => console.log('connected to database'))
         .catch(err => console.log('error ', err))

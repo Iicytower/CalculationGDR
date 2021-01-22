@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as bodyParser from 'body-parser';
 import validator from "../../middlewares/validator";
-import { check, body, checkSchema } from "express-validator";
+import { check } from "express-validator";
 import { Request, Response, NextFunction } from 'express';
 
 const router = Router();

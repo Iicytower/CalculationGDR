@@ -54,5 +54,4 @@ const CalculationSchema = new Schema({
     timestamps: true,
 });
 
-
 export default model('Calculation', CalculationSchema);;
