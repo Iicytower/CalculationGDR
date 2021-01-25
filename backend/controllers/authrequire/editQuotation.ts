@@ -20,20 +20,22 @@ export default async (req: Request, res: Response) => {
    }
 
    try {
+      interface Document {
+         name: string,
+         useMethod: "perDay" | "perMeter",
+         workPerDay?: any,
+         workPerMeter?: any
+      }
 
-      const doc = await Quotation.findOne({
+      const doc: Document | any = await Quotation.findOne({
          _id: data._id,
          owner: currentUser._id,
       })
    
       if(doc){
-         // @ts-ignore TODO
          doc.name = data.name;
-         //@ts-ignore TODO
          doc.useMethod = data.useMethod;
-         //@ts-ignore TODO
          doc.workPerDay = data.workPerDay;
-         //@ts-ignore TODO
          doc.workPerMeter = data.workPerMeter;
       }else{
          return res.status(404).json({
