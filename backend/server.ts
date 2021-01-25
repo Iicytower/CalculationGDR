@@ -7,8 +7,9 @@ import passportConfig from "./helpers/passportConfig";
 
 try {
     //TODO adress from eviroment variables
-    const dburl: string = 'mongodb+srv://admin:admin123@cluster0.ewwpc.mongodb.net/calculationgdr?retryWrites=true&w=majority';
-    mongoose.connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true })
+    const dburi: string = 'mongodb+srv://admin:admin123@cluster0.ewwpc.mongodb.net/calculationgdr?retryWrites=true&w=majority';
+    // const dburi: string = String(process.env.DATABASE_ADRESS);    
+    mongoose.connect(dburi, { useNewUrlParser: true, useUnifiedTopology: true })
         .then(() => console.log('connected to database'))
         .catch(err => console.log('error ', err))
 

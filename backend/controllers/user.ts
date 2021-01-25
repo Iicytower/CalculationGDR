@@ -63,16 +63,24 @@ export default {
         }
         const usr: User = req.user
 
-        const token = jwt.sign(
-            { id: usr._id }, 
-            String(process.env.JWT_SECRET), 
-            {expiresIn: 1000*60*8} //8hours
-            )
+        try {
+            const token = jwt.sign(
+                { id: usr._id }, 
+                String(process.env.JWT_SECRET), 
+                {expiresIn: 1000*60*8} //8hours
+                )
+    
+            return res.status(200).json({
+                status: 'success',
+                msg: 'succesfully login',
+                token,
+            });
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({
+                msg: "Somethiing goes wrong with login"
+            })
+        }
 
-        return res.status(200).json({
-            status: 'success',
-            msg: 'succesfully login',
-            token,
-        });
     }
 }

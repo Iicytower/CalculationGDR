@@ -5,10 +5,13 @@ import User from '../database/models/User';
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
 
-function verifyCallback(payload: any, done: any) {
-    return User.findOne({ _id: payload.id })
-        .then(user => done(null, user))
-        .catch(err => done(err));
+async function verifyCallback(payload: any, done: any) {
+    try {
+        const user = await User.findOne({ _id: payload.id });
+        return done(null, user);
+    } catch (err) {
+        return done(err);
+    }
 }
 
 export default () => {
