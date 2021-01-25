@@ -42,7 +42,6 @@ export default async (req: Request, res: Response) => {
             msg: "Quotation not found",
          });
       }
-      //TODO handle error
       const dbRes = await doc.save();
    
       return res.status(200).json({

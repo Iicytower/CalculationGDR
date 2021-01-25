@@ -37,20 +37,8 @@ export default async (req: Request, res: Response) => {
             })
         }
 
-        
         const calc = new Quotation(data);
         const dbRes = await calc.save();
-
-        //TODO handle database error
-        // const dbRes = await calc.save(err => {
-        //     if (err) {
-        //         console.error('Error: \n', err);
-        //         return res.status(500).json(err);
-        //     }
-        // });
-        //
-        //alternative
-        // const dbRes = await Quotation.create(data);
 
         return res.status(201).json({
             msg: 'Quotation is added'
