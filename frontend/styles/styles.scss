@@ -1,38 +1,54 @@
-body {
+@import "./scss/variables.scss";
+
+*{
     margin: 0;
-    padding: 0px 60px;
-    background-color: #29201B;
-    color: #efefef;
+    padding: 0;
+}
+
+body {
+    margin: auto;
+    padding: auto;
+    background-color: $backgroundColor;
+    color: $fontColor;
     font-family: 'Open Sans', sans-serif;
-    font-size: 17px;
+    font-size: $mediumFontSize;
     display: flex;
+    align-items: center;
 }
 
 .container {
     display: flex;
-    margin: auto;
-    margin-top: 100px;
-    padding: auto;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2px;
     align-items: center;
     flex-direction: column;
-}
-
-.mainPiece{
-    justify-content: space-around;
-    padding: 10px;
-    align-items: center;
+    height: 100vh;
 }
 
 .form{
-    display: flex;
-    flex-direction: row;
-}
-
-.response{
     margin: auto;
+    padding: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 }
 
-.login, .register{
+.mainPiece{
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    margin: 10px;
+    align-items: center;
+}
+
+#response{
+    margin: auto;
+    color: red;
+}
+
+.nickname, .password{
     margin-top: 10px;
     margin-bottom: 10px;
 }

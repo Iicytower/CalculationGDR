@@ -1,6 +1,11 @@
-body {
+* {
   margin: 0;
-  padding: 0px 60px;
+  padding: 0;
+}
+
+body {
+  margin: auto;
+  padding: auto;
   background-color: #29201B;
   color: #efefef;
   font-family: 'Open Sans', sans-serif;
@@ -8,15 +13,18 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  margin: auto;
-  margin-top: 100px;
-  padding: auto;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2px;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -24,32 +32,44 @@ body {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  height: 100vh;
 }
 
-.mainPiece {
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
-  padding: 10px;
+.form {
+  margin: auto;
+  padding: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
 }
 
-.form {
+.mainPiece {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  padding: 10px;
+  margin: 10px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
-.response {
+#response {
   margin: auto;
+  color: red;
 }
 
-.login, .register {
+.nickname, .password {
   margin-top: 10px;
   margin-bottom: 10px;
 }

@@ -21,7 +21,7 @@ loginBtn.addEventListener("click", async () => {
       case 200:
         const data = await res.json();
         response.innerText = data.msg;
-
+        localStorage.setItem('token', data.token);
         window.location.replace("/dashboard");
         break;
       case 422:
