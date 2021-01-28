@@ -5,7 +5,7 @@ import { QuotationInterface } from "../../helpers/interfaces";
 
 export default async (req: Request, res: Response) => {
 
-    const { name, useMethod, workPerDay, workPerMeter } = req.body;
+    const { name, useMethod, workPerDay, workPerMeter, totalMaterialsSumPrice, totalWorkPrice, totalPriceNetto, totalPriceBrutto } = req.body;
 
     if (req.user === undefined) return res.status(401).json({
         msg: "Unauthorized",
@@ -19,6 +19,10 @@ export default async (req: Request, res: Response) => {
         name,
         owner: currentUser._id,
         useMethod,
+        totalMaterialsSumPrice,
+        totalWorkPrice,
+        totalPriceNetto,
+        totalPriceBrutto,
     };
 
     if (useMethod === "perDay") data.workPerDay = workPerDay;
@@ -37,7 +41,7 @@ export default async (req: Request, res: Response) => {
             })
         }
 
-        
+
         const calc = new Quotation(data);
         const dbRes = await calc.save();
 

@@ -1,7 +1,7 @@
 const loginBtn = document.querySelector("#loginForm");
 const registerBtn = document.querySelector("#registerForm");
-const adress = "http://localhost:3000";
 const response = document.querySelector("#response");
+const adress = "http://localhost:3000";
 
 loginBtn.addEventListener("click", async () => {
   const formValues = {
@@ -22,7 +22,7 @@ loginBtn.addEventListener("click", async () => {
         const data = await res.json();
         response.innerText = data.msg;
         localStorage.setItem('token', data.token);
-        window.location.replace("/dashboard");
+        window.location.replace("dashboard.html");
         break;
       case 422:
         const datav = await res.json();

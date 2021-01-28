@@ -1,0 +1,53 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+@import "./main.scss";
+// @import "./dashboard.scss";
+
+/////////////////////////////////////////
+@import "./variables.scss";
+
+.dashboardContainer {
+  display: flex;
+  height: 95vh;
+  justify-content: space-between;
+  align-items: center;
+  padding: auto;
+}
+
+.quotationList {
+  width: 25vw;
+  padding: 5px 5px 5px 20px;
+  ul {
+    list-style-type: none;
+    margin: 0.5vh;
+    padding: 5px;
+    li {
+      padding: 5px;
+      margin-bottom: 12px;
+      border: 2px solid $borderColor;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      border-radius: 4px;
+      .dates {
+        display: flex;
+        flex-direction: row;
+        font-size: 10px;
+        justify-content: flex-end;
+        .dateItem {
+          color: $fontColorSecondary;
+          margin: 3px;
+        }
+      }
+    }
+  }
+}
+
+.workspace {
+  width: 70vw;
+  height: 100px; //to delete
+  background-color: green;
+}
