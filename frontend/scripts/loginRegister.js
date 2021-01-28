@@ -1,3 +1,5 @@
+'use strict';
+
 const loginBtn = document.querySelector("#loginForm");
 const registerBtn = document.querySelector("#registerForm");
 const response = document.querySelector("#response");
@@ -20,7 +22,6 @@ loginBtn.addEventListener("click", async () => {
     switch (res.status) {
       case 200:
         const data = await res.json();
-        response.innerText = data.msg;
         localStorage.setItem('token', data.token);
         window.location.replace("dashboard.html");
         break;
