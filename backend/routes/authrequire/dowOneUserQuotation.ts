@@ -7,10 +7,10 @@ const router = Router();
 
 import dowOneUserQuotation from '../../controllers/authrequire/dowOneUserQuotation';
 
-router.get('/', 
+router.get('/:name', 
 bodyParser.json(),
 [
-   check("name").isString(),
+   // check("name").isString(),
 ],
 validator(),
 dowOneUserQuotation);

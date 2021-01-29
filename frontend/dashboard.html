@@ -9,12 +9,92 @@
 </head>
 
 <body>
-   
    <div class="dashboardContainer">
-      <div class="quotationList" id="quotationList"></div>
-      <div class="workspace" id="workspace"></div>
+      <div class="menu">
+         <br><button id="addNewQuotation">Add new quotation</button>
+      </div>
+      <div class="dashboard">
+         <div class="quotationList" id="quotationList"></div>
+         <div class="workspace" id="workspace">
+
+            <form id="workspace">
+               <div class="mainInfo">
+
+                  <div class="el">
+                     <label>name: <input type="text" name="name" placeholder="enter the name of Quotation"></label>
+                  </div>
+
+                  <div class="el">
+                     <fieldset>
+                        <legend>Method</legend>
+                        <div><label><input type="radio" value="perDay" name="useMethod" checked>perDay</label></div>
+                        <div><label><input type="radio" value="perMeter" name="useMethod">perMeter</label></div>
+                     </fieldset>
+                  </div>
+
+               </div>
+               <div class="perDay">
+                  <div class="el">
+                     <div id="works">
+                        <button type="button" class="addWork" id="addWork">add work</button>
+                        <div id="worksList">
+                           <fieldset style="padding:5px;">
+                              <!-- add dynamic chande innerHTML in legend. value should be taken from activity name -->
+                              <legend>Work</legend>
+                              <div class="work">
+                                 <div><label>Activity name<input type="text" name="name" id="workName"></label></div>
+                                 <div class="materials">
+                                    <button type="button" class="addMaterial" id="addMaterial">add material</button>
+                                    <fieldset>
+                                       <legend>Materials</legend>
+                                       <div><label>material name<input type="text" name="name"></label></div>
+                                       <div><label>quantity<input type="number" name="quantity"></label></div>
+                                       <div><label>price per item<input type="number" name="pricePerItem"></label></div>
+                                    </fieldset>
+                                 </div>
+
+                                 <div class="activities">
+                                    <button type="button" class="addActivity" id="addActivity">add activity</button>
+                                    <fieldset>
+                                       <div><label>activity name<input type="text" name="name"></label></div>
+                                       <div><label>number of working days<input type="number"
+                                                name="numberOfWorkingDays"></label></div>
+                                    </fieldset>
+                                 </div>
+                                 <div><label>sum of working days: <input type="text" name="sumOfWorkingDays"
+                                          placeholder="0" readonly></label></div>
+                              </div>
+                           </fieldset>
+                        </div>
+                     </div>
+
+                     <div class="border">&nbsp</div>
+                     <div><label> persons quantity <input type="number" name="personsQuantity" step="1" value="1"
+                              required></label></div>
+                     <div><label> total sum of working days <input type="number" name="totalSumOfWorkingDays" step="0.5"
+                              value="3" required></label></div>
+                     <div><label> money of the day <input type="number" name="moneyOfTheDay" step="50" value="400"
+                              required></label></div>
+                  </div>
+               </div>
+               <div class="perMeter"></div>
+               <div class="totalPrices">
+                  <div class="el"><label>total materials sum price: <input type="text" name="totalMaterialsSumPrice"
+                           placeholder="0" readonly></label></div>
+                  <div class="el"><label>total work price: <input type="text" name="totalWorkPrice" placeholder="0"
+                           readonly></label></div>
+                  <div class="el"><label>total price netto: <input type="text" name="totalPriceNetto" placeholder="0"
+                           readonly></label></div>
+                  <div class="el"><label>total price brutto: <input type="text" name="totalPriceBrutto" placeholder="0"
+                           readonly></label></div>
+               </div>
+               <input type="reset" value="Clear form">
+               <input type="submit" value="add quotation to database">
+            </form>
+
+         </div>
+      </div>
    </div>
-   
    <script src="./scripts/dashboard.js" type="module" async defer></script>
 </body>
 

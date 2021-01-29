@@ -9,9 +9,20 @@
 /////////////////////////////////////////
 @import "./variables.scss";
 
-.dashboardContainer {
+.dashboardContainer{
   display: flex;
-  height: 95vh;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.menu{
+  width: 90vw;
+  margin-bottom: 40px;
+}
+
+.dashboard {
+  display: flex;
   justify-content: space-between;
   align-items: center;
   padding: auto;
@@ -24,7 +35,7 @@
     list-style-type: none;
     margin: 0.5vh;
     padding: 5px;
-    li {
+    .quotationItem {
       padding: 5px;
       margin-bottom: 12px;
       border: 2px solid $borderColor;
@@ -32,6 +43,9 @@
       flex-direction: column;
       cursor: pointer;
       border-radius: 4px;
+      div, h3{
+        pointer-events: none;
+      }
       .dates {
         display: flex;
         flex-direction: row;
@@ -48,6 +62,34 @@
 
 .workspace {
   width: 70vw;
-  height: 100px; //to delete
   background-color: green;
+  display: flex;
+  padding: 5px;
+  .mainInfo{
+    display: flex;
+    padding: 5px;
+    border-bottom: 2px solid $borderColor;
+
+    .el{
+      flex-direction: row;
+      margin-left: 5px;
+    }
+  }
+  .perDay{
+    padding: 5px;
+  }
+
+  .perMeter{
+    padding: 5px;
+  }
+
+  .totalPrices{
+
+    padding: 5px;
+    border-top: 2px solid $borderColor;
+  }
+}
+
+.border{
+  border-bottom: 2px solid $borderColor;
 }

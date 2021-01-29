@@ -12,7 +12,8 @@ export default async (req: Request, res: Response) => {
       }
 
       const currentUser: User = req.user
-      const { name } = req.body;
+      const { name } = req.params;
+
       const data = await Quotation.findOne({
          owner: currentUser._id,
          name,
