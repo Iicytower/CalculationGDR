@@ -237,8 +237,6 @@ for (let i = 0; i < useMethod.length; i++) {
 
           });
         }
-
-        // workspaceForm.innerHTML = elem.nextSibling.data;
         break;
       }
     }
