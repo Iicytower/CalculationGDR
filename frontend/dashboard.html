@@ -17,11 +17,11 @@
          <div class="quotationList" id="quotationList"></div>
          <div class="workspace" id="workspace">
 
-            <form id="workspace">
+            <form id="fullForm" method="POST" enctype="multipart/form-data">
                <div class="mainInfo">
 
                   <div class="el">
-                     <label>name: <input type="text" name="name" placeholder="enter the name of Quotation"></label>
+                     <label>name: <input type="text" name="name" placeholder="enter the name of quotation" require></label>
                   </div>
 
                   <div class="el">
@@ -46,12 +46,17 @@
                   <div class="el"><label>total price brutto: <input type="text" name="totalPriceBrutto" placeholder="0"
                            readonly></label></div>
                </div>
-               <input type="reset" value="Clear form">
-               <input type="submit" value="add quotation to database">
+               <div class="formButtons">
+
+                  <input type="reset" value="Clear form">
+                  <input type="button" value="add quotation to database" id="acceptForm">
+                  <input type="button" value="summarize" id="summarize">
+               </div>
             </form>
 
          </div>
       </div>
+      <div id="response"></div>
    </div>
    <script src="./scripts/dashboard.js" type="module" async defer></script>
 </body>

@@ -37,7 +37,7 @@ export default async (req: Request, res: Response) => {
 
         if (!!isExist) {
             return res.status(200).json({
-                mgs: `You already have a Quotation with name ${name}`
+                msg: `You already have a Quotation with name ${name}`
             })
         }
 
