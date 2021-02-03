@@ -7,11 +7,9 @@ const router = Router();
 
 import delQuotation from '../../controllers/authrequire/delQuotation';
 
-router.delete('/', 
+router.delete('/:name', 
 bodyParser.json(),
 [
-   check("_id").isString(),
-   check("owner").isString(),
 ],
 validator(),
 delQuotation);

@@ -11,21 +11,13 @@ export default async (req: Request, res: Response) => {
    }
 
    const currentUser: User = req.user
-   const data = req.body;
-
-   if (String(currentUser._id) !== String(data.owner)) {
-      return res.status(401).json({
-         msg: "It is not your Quotation. Access denied."
-      })
-   }
+   const { name } = req.params;
 
    try {
-
       const doc = await Quotation.findOne({
-         _id: data._id,
+         name,
          owner: currentUser._id,
       })
-
       if (!doc) return res.status(404).json({
          msg: "Quotation not found",
       });
