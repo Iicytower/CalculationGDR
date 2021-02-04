@@ -9,6 +9,97 @@ let formValues = {
   useMethod: "perDay",
 };
 
+const createWorkComp = () => {
+  const components = {
+    perDay: `<div class="el perDay">
+    <div id="works">
+       <button type="button" class="addWork" id="addWork">add work</button>
+       <div id="worksList"></div>
+    </div>
+
+    <div class="border">&nbsp</div>
+    <div class="formIt"><label> persons quantity <input type="number" name="personsQuantity" value="1"
+             required readonly></label></div>
+    <div class="formIt"><label> total sum of working days <input type="number" name="totalSumOfWorkingDays" 
+             value="0" required readonly></label></div>
+    <div class="formIt"><label> money of the day <input type="number" name="moneyOfTheDay" step="50" value="400"
+             required></label></div>
+ </div>`,
+    perMeter: `<div class="el perMeter"><div class="materials divOnBtn">
+    <button type="button" class="addMaterial">add material</button>
+    <div class="materialsItem"></div>
+ </div>
+
+ <div class="difficults divOnBtn">
+    <button type="button" class="addDifficult">add difficult</button>
+    <div class="difficultsItem"></div>
+ </div>
+ <div class="numbersOfMeters formIt"><label>number of meters: <input type="number" name="numbersOfMeters" value="200" step="10"></label></div>
+ <div class="pricePerMeter formIt"><label>price per meter: <input type="number" name="pricePerMeter" value="100" step="10"></label></div></div>`,
+    work: `<fieldset class="p5">
+    <!-- add dynamic chande innerHTML in legend. value should be taken from activity name -->
+    <legend>Work</legend>
+    <div class="work">
+       <div class="formIt"><label>work name<input type="text" name="name" class="workName"></label></div>
+       <div class="materials divOnBtn">
+          <button type="button" class="addMaterial">add material</button>
+          <div class="materialsItem"></div>
+       </div>
+       <div class="activities divOnBtn">
+          <button type="button" class="addActivity">add activity</button>
+          <div class="activitiesItem"></div>
+       </div>
+       <div class="formIt"><label>sum of working days: <input type="text" name="sumOfWorkingDays"
+                placeholder="0" readonly></label></div>
+    </div>
+  </fieldset>`,
+    activity: `<fieldset class="p5">
+    <legend>Activity</legend>
+    <div class="formIt"><label>activity name<input type="text" name="name"></label></div>
+    <div class="formIt"><label>number of working days<input type="number" name="numberOfWorkingDays"></label></div>
+  </fieldset>`,
+    material: `<fieldset class="p5">
+    <legend>Materials</legend>
+    <div class="materialIt">
+      <div class="formIt"><label>material name<input type="text" name="name"></label></div>
+      <div class="formIt"><label>quantity<input type="number" name="quantity"></label></div>
+      <div class="formIt"><label>price per item<input type="number" name="pricePerItem"></label></div>
+    </div>
+  </fieldset>`,
+    difficult: `<fieldset class="p5">
+    <div class="difficultIt">
+    <legend>Difficults</legend>
+    <div class="formIt"><label>difficult name<input type="text" name="name"></label></div>
+    <div class="formIt"><label>converter<input type="number" name="converter" value="0.1" step="0.1"></label></div>
+    </div>
+  </fieldset>`,
+  };
+  const addWork = document.querySelector("#addWork");
+  addWork.addEventListener("click", (el) => {
+    const worksList = document.querySelector("#worksList");
+    const insertedElement = document.createElement("div");
+    insertedElement.className = "peon";
+    insertedElement.innerHTML = components.work;
+    el.target.parentNode.lastElementChild.insertBefore(insertedElement, null);
+
+    const addMaterial = insertedElement.querySelector(".addMaterial");
+    addMaterial.addEventListener("click", (el) => {
+      const insertedElement = document.createElement("div");
+      insertedElement.className = "materialIt";
+      insertedElement.innerHTML = components.material;
+      el.target.parentNode.lastElementChild.insertBefore(insertedElement, null);
+    });
+
+    const addActivity = insertedElement.querySelector(".addActivity");
+    addActivity.addEventListener("click", (el) => {
+      const insertedElement = document.createElement("div");
+      insertedElement.className = "activityIt";
+      insertedElement.innerHTML = components.activity;
+      el.target.parentNode.lastElementChild.insertBefore(insertedElement, null);
+    });
+  });
+};
+
 const fetchQuotationsList = async () => {
   try {
     const resQuotationsList = await fetch(
@@ -58,31 +149,28 @@ const deleteQuotation = async (name) => {
         },
       }
     );
-    return resQuotation
+    return resQuotation;
   } catch (err) {
     console.error(err);
   }
-}
+};
 
 const editQuotation = async (formData) => {
   try {
-    const resQuotation = await fetch(
-      `${adress}/authrequire/editQuotation/`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.token}`,
-        },
-        body: JSON.stringify(formData)
-      }
-    );
+    const resQuotation = await fetch(`${adress}/authrequire/editQuotation/`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.token}`,
+      },
+      body: JSON.stringify(formData),
+    });
     console.log(resQuotation);
-    return resQuotation
+    return resQuotation;
   } catch (err) {
     console.error(err);
   }
-}
+};
 
 const createQuotationsList = (quotationsList) => {
   if (quotationsList.length === 0) return `You don't have any quotation yet.`;
@@ -135,7 +223,9 @@ const createSendObj = () => {
       const el = peon[i];
       const currentWork = {
         name: el.querySelector("input[name=name").value,
-        sumOfWorkingDays: Number(el.querySelector("input[name=sumOfWorkingDays]").value),
+        sumOfWorkingDays: Number(
+          el.querySelector("input[name=sumOfWorkingDays]").value
+        ),
         materials: [],
         activities: [],
       };
@@ -146,7 +236,9 @@ const createSendObj = () => {
         currentWork.materials.push({
           name: ele.querySelector("input[name=name]").value,
           quantity: Number(ele.querySelector("input[name=quantity]").value),
-          pricePerItem: Number(ele.querySelector("input[name=pricePerItem]").value),
+          pricePerItem: Number(
+            ele.querySelector("input[name=pricePerItem]").value
+          ),
         });
       }
 
@@ -155,16 +247,24 @@ const createSendObj = () => {
         const ele = activitiesItem[j];
         currentWork.activities.push({
           name: ele.querySelector("input[name=name]").value,
-          numberOfWorkingDays: Number(ele.querySelector("input[name=numberOfWorkingDays]").value),
+          numberOfWorkingDays: Number(
+            ele.querySelector("input[name=numberOfWorkingDays]").value
+          ),
         });
       }
 
       formValues.workPerDay.works.push(currentWork);
     }
 
-    formValues.workPerDay.personsQuantity = Number(perDay.querySelector("input[name=personsQuantity]").value);
-    formValues.workPerDay.totalSumOfWorkingDays = Number(perDay.querySelector("input[name=totalSumOfWorkingDays]").value);
-    formValues.workPerDay.moneyOfTheDay = Number(perDay.querySelector("input[name=moneyOfTheDay]").value);
+    formValues.workPerDay.personsQuantity = Number(
+      perDay.querySelector("input[name=personsQuantity]").value
+    );
+    formValues.workPerDay.totalSumOfWorkingDays = Number(
+      perDay.querySelector("input[name=totalSumOfWorkingDays]").value
+    );
+    formValues.workPerDay.moneyOfTheDay = Number(
+      perDay.querySelector("input[name=moneyOfTheDay]").value
+    );
   }
 
   if (perMeter) {
@@ -180,7 +280,9 @@ const createSendObj = () => {
       formValues.workPerMeter.materials.push({
         name: el.querySelector("input[name=name]").value,
         quantity: Number(el.querySelector("input[name=quantity]").value),
-        pricePerItem: Number(el.querySelector("input[name=pricePerItem]").value),
+        pricePerItem: Number(
+          el.querySelector("input[name=pricePerItem]").value
+        ),
       });
     }
 
@@ -189,146 +291,128 @@ const createSendObj = () => {
       formValues.workPerMeter.difficults.push({
         name: el.querySelector("input[name=name]").value,
         converter: Number(el.querySelector("input[name=converter]").value),
-      })
+      });
     }
 
-    formValues.workPerMeter.numberOfMeters = Number(perMeter.querySelector("input[name=numberOfMeters]").value);
-    formValues.workPerMeter.pricePerMeter = Number(perMeter.querySelector("input[name=pricePerMeter]").value);
-
+    formValues.workPerMeter.numbersOfMeters = Number(
+      perMeter.querySelector("input[name=numbersOfMeters]").value
+    );
+    formValues.workPerMeter.pricePerMeter = Number(
+      perMeter.querySelector("input[name=pricePerMeter]").value
+    );
   }
 
-  const totalPrices = document.querySelector(".totalPrices")
+  const totalPrices = document.querySelector(".totalPrices");
 
-  formValues.totalMaterialsSumPrice = Number(totalPrices.querySelector("input[name=totalMaterialsSumPrice]").value);
-  formValues.totalWorkPrice = Number(totalPrices.querySelector("input[name=totalWorkPrice]").value);
-  formValues.totalPriceNetto = Number(totalPrices.querySelector("input[name=totalPriceNetto]").value);
-  formValues.totalPriceBrutto = Number(totalPrices.querySelector("input[name=totalPriceBrutto]").value);
-  formValues.name = document.querySelector(".mainInfo").querySelector("input[name=name]").value;
+  formValues.totalMaterialsSumPrice = Number(
+    totalPrices.querySelector("input[name=totalMaterialsSumPrice]").value
+  );
+  formValues.totalWorkPrice = Number(
+    totalPrices.querySelector("input[name=totalWorkPrice]").value
+  );
+  formValues.totalPriceNetto = Number(
+    totalPrices.querySelector("input[name=totalPriceNetto]").value
+  );
+  formValues.totalPriceBrutto = Number(
+    totalPrices.querySelector("input[name=totalPriceBrutto]").value
+  );
+  formValues.name = document
+    .querySelector(".mainInfo")
+    .querySelector("input[name=name]").value;
 
   return formValues;
-}
+};
 
 const sumarize = () => {
   const formValues = createSendObj();
-  
-  if(formValues.useMethod === "perDay"){
+
+  if (formValues.useMethod === "perDay") {
     let totalMaterialsSumPrice = 0;
-    formValues.workPerDay.works.forEach(el => {
-      el.sumOfWorkingDays = el.activities.reduce((acc, cur)=> acc + cur.numberOfWorkingDays, 0);
-      
-      totalMaterialsSumPrice += (el.materials.reduce((acc, cur) => acc + (cur.pricePerItem*cur.quantity), 0)/123) * 100;
-      formValues.workPerDay.totalSumOfWorkingDays += el.sumOfWorkingDays
+    formValues.workPerDay.works.forEach((el) => {
+      el.sumOfWorkingDays = el.activities.reduce(
+        (acc, cur) => acc + cur.numberOfWorkingDays,
+        0
+      );
+
+      totalMaterialsSumPrice +=
+        (el.materials.reduce(
+          (acc, cur) => acc + cur.pricePerItem * cur.quantity,
+          0
+        ) /
+          123) *
+        100;
+      formValues.workPerDay.totalSumOfWorkingDays += el.sumOfWorkingDays;
     });
     formValues.totalMaterialsSumPrice = totalMaterialsSumPrice;
-    formValues.totalWorkPrice = 
-    formValues.workPerDay.personsQuantity * formValues.workPerDay.totalSumOfWorkingDays * formValues.workPerDay.moneyOfTheDay * 1.4/*marża*/;
+    formValues.totalWorkPrice =
+      formValues.workPerDay.personsQuantity *
+      formValues.workPerDay.totalSumOfWorkingDays *
+      formValues.workPerDay.moneyOfTheDay *
+      1.4 /*marża*/;
 
     const worksList = document.querySelector("#worksList");
     const peons = worksList.querySelectorAll(".peon");
-    peons.forEach(el => {
+    peons.forEach((el) => {
       let helper = 0;
-      const activityIt = el.querySelectorAll(".activityIt")    
+      const activityIt = el.querySelectorAll(".activityIt");
       for (let i = 0; i < activityIt.length; i++) {
         const ele = activityIt[i];
-          helper = helper + Number(ele.querySelector("input[name=numberOfWorkingDays]").value);
+        helper =
+          helper +
+          Number(ele.querySelector("input[name=numberOfWorkingDays]").value);
       }
       el.querySelector("input[name=sumOfWorkingDays]").value = helper;
     });
   }
-  
-  if(formValues.useMethod === "perMeter"){
+
+  if (formValues.useMethod === "perMeter") {
     let totalMaterialsSumPrice = 0;
-    formValues.workPerMeter.materials.forEach(el => {
+    formValues.workPerMeter.materials.forEach((el) => {
       totalMaterialsSumPrice += el.quantity * el.pricePerItem;
     });
     formValues.totalMaterialsSumPrice = totalMaterialsSumPrice;
-    formValues.totalWorkPrice = 
-    formValues.workPerMeter.numberOfMeters * formValues.workPerMeter.pricePerMeter * 
-    (1 + formValues.workPerMeter.difficults.reduce((acc, cur)=> acc + cur.converter , 0));
-
+    formValues.totalWorkPrice =
+      formValues.workPerMeter.numbersOfMeters *
+      formValues.workPerMeter.pricePerMeter *
+      (1 +
+        formValues.workPerMeter.difficults.reduce(
+          (acc, cur) => acc + cur.converter,
+          0
+        ));
   }
-  
-  formValues.totalPriceNetto = formValues.totalWorkPrice + formValues.totalMaterialsSumPrice;
+
+  formValues.totalPriceNetto =
+    formValues.totalWorkPrice + formValues.totalMaterialsSumPrice;
   formValues.totalPriceBrutto = formValues.totalPriceNetto * 1.23;
 
   const totalPrices = document.querySelector(".totalPrices");
 
-  totalPrices.querySelector("input[name=totalMaterialsSumPrice]").value = formValues.totalMaterialsSumPrice;
-  totalPrices.querySelector("input[name=totalWorkPrice]").value = formValues.totalWorkPrice;
-  totalPrices.querySelector("input[name=totalPriceNetto]").value = formValues.totalPriceNetto;
-  totalPrices.querySelector("input[name=totalPriceBrutto]").value = formValues.totalPriceBrutto;
+  totalPrices.querySelector("input[name=totalMaterialsSumPrice]").value =
+    formValues.totalMaterialsSumPrice;
+  totalPrices.querySelector("input[name=totalWorkPrice]").value =
+    formValues.totalWorkPrice;
+  totalPrices.querySelector("input[name=totalPriceNetto]").value =
+    formValues.totalPriceNetto;
+  totalPrices.querySelector("input[name=totalPriceBrutto]").value =
+    formValues.totalPriceBrutto;
 
   return formValues;
-}
-
-window.onload = async () => {
-  try {
-    const quotationsList = await fetchQuotationsList();
-
-    const listComponent = createQuotationsList(quotationsList);
-    quotationList.innerHTML = `<h2>Quotation list: </h2> ${listComponent}`;
-
-    const ul = document.querySelector("#quotationList");
-
-    ul.addEventListener("click", async (el) => {
-      if (el.target.tagName === "UL") return 0;
-      if (el.target.tagName === "DIV") return 0;
-      if(el.target.tagName === "BUTTON"){
-
-        const quotationName = el.target.getAttribute("holder")
-
-        if(el.target.className === "delete"){
-
-          const res = await deleteQuotation(quotationName)
-          const resp = await res.json();
-          response.innerText = resp.msg
-
-          const toRemoveEl = document.querySelector(`#${quotationName}`);
-          toRemoveEl.remove();
-          el.target.parentNode.remove();
-          return 0;
-        }
-        if(el.target.className === "edit"){
-          //TODO 
-          const formData = createSendObj()
-          console.log(formData);
-        }
-        return 0;
-      }
-      const name = el.target.id;
-      const data = await fetchOneQuotation(name);
-      console.log(data);
-
-    });
-
-    const addNewQuotationBtn = document.querySelector("#addNewQuotation");
-
-    addNewQuotationBtn.addEventListener("click", () => {
-      console.log("add new quotation");
-    });
-
-  } catch (err) {
-    console.error(err);
-  }
-
-  document.querySelector('form').reset();
-
 };
 
-const workspaceForm = document.querySelector(".workspaceForm");
+const onstartLoop = () => {
+  const useMethod = document.querySelectorAll("input[name=useMethod]");
+  const workspaceForm = document.querySelector(".workspaceForm");
 
-const useMethod = document.querySelectorAll("input[name=useMethod]");
+  for (let i = 0; i < useMethod.length; i++) {
+    const ele = useMethod[i];
 
-for (let i = 0; i < useMethod.length; i++) {
-  const ele = useMethod[i];
+    ele.addEventListener("change", (e) => {
+      for (let j = 0; j < useMethod.length; j++) {
+        const elem = useMethod[j];
 
-  ele.addEventListener("change", (e) => {
-    for (let j = 0; j < useMethod.length; j++) {
-      const elem = useMethod[j];
-
-      if (elem.checked) {
-        if (elem.nextSibling.data === "perDay") {
-          workspaceForm.innerHTML = `<div class="el perDay">
+        if (elem.checked) {
+          if (elem.nextSibling.data === "perDay") {
+            workspaceForm.innerHTML = `<div class="el perDay">
           <div id="works">
              <button type="button" class="addWork" id="addWork">add work</button>
              <div id="worksList"></div>
@@ -342,74 +426,12 @@ for (let i = 0; i < useMethod.length; i++) {
           <div class="formIt"><label> money of the day <input type="number" name="moneyOfTheDay" step="50" value="400"
                    required></label></div>
        </div>`;
-          formValues.useMethod = "perDay";
-          const addWork = document.querySelector("#addWork");
-          addWork.addEventListener("click", (el) => {
-            const worksList = document.querySelector("#worksList");
-            const comp = `<fieldset class="p5">
-         <!-- add dynamic chande innerHTML in legend. value should be taken from activity name -->
-         <legend>Work</legend>
-         <div class="work">
-            <div class="formIt"><label>work name<input type="text" name="name" class="workName"></label></div>
-            <div class="materials divOnBtn">
-               <button type="button" class="addMaterial">add material</button>
-               <div class="materialsItem"></div>
-            </div>
-       
-            <div class="activities divOnBtn">
-               <button type="button" class="addActivity">add activity</button>
-               <div class="activitiesItem"></div>
-            </div>
-            <div class="formIt"><label>sum of working days: <input type="text" name="sumOfWorkingDays"
-                     placeholder="0" readonly></label></div>
-         </div>
-       </fieldset>`;
-            const insertedElement = document.createElement("div");
-            insertedElement.className = "peon";
-            insertedElement.innerHTML = comp;
-            el.target.parentNode.lastElementChild.insertBefore(
-              insertedElement,
-              null
-            );
+            formValues.useMethod = "perDay";
 
-            const addMaterial = insertedElement.querySelector(".addMaterial");
-            addMaterial.addEventListener("click", (el) => {
-              const component = `<fieldset class="p5">
-             <legend>Materials</legend>
-             <div class="formIt"><label>material name<input type="text" name="name"></label></div>
-             <div class="formIt"><label>quantity<input type="number" name="quantity"></label></div>
-             <div class="formIt"><label>price per item<input type="number" name="pricePerItem"></label></div>
-           </fieldset>`;
-
-              const insertedElement = document.createElement("div");
-              insertedElement.className = "materialIt";
-              insertedElement.innerHTML = component;
-              el.target.parentNode.lastElementChild.insertBefore(
-                insertedElement,
-                null
-              );
-            });
-
-            const addActivity = insertedElement.querySelector(".addActivity");
-            addActivity.addEventListener("click", (el) => {
-              const component = `<fieldset class="p5">
-             <legend>Activity</legend>
-             <div class="formIt"><label>activity name<input type="text" name="name"></label></div>
-             <div class="formIt"><label>number of working days<input type="number" name="numberOfWorkingDays"></label></div>
-           </fieldset>`;
-
-              const insertedElement = document.createElement("div");
-              insertedElement.className = "activityIt";
-              insertedElement.innerHTML = component;
-              el.target.parentNode.lastElementChild.insertBefore(
-                insertedElement,
-                null
-              );
-            });
-          });
-        }
-        if (elem.nextSibling.data === "perMeter") {
-          workspaceForm.innerHTML = `<div class="el perMeter"><div class="materials divOnBtn">
+            createWorkComp();
+          }
+          if (elem.nextSibling.data === "perMeter") {
+            workspaceForm.innerHTML = `<div class="el perMeter"><div class="materials divOnBtn">
           <button type="button" class="addMaterial">add material</button>
           <div class="materialsItem"></div>
        </div>
@@ -418,13 +440,14 @@ for (let i = 0; i < useMethod.length; i++) {
           <button type="button" class="addDifficult">add difficult</button>
           <div class="difficultsItem"></div>
        </div>
-       <div class="numberOfMeters formIt"><label>number of meters: <input type="number" name="numberOfMeters" value="200" step="10"></label></div>
+       <div class="numbersOfMeters formIt"><label>number of meters: <input type="number" name="numbersOfMeters" value="200" step="10"></label></div>
        <div class="pricePerMeter formIt"><label>price per meter: <input type="number" name="pricePerMeter" value="100" step="10"></label></div></div>`;
 
-       formValues.useMethod = "perMeter";
-          const addMaterial = document.querySelector(".addMaterial");
-          addMaterial.addEventListener("click", (el) => {
-            const component = `<fieldset class="p5">
+            formValues.useMethod = "perMeter";
+
+            const addMaterial = document.querySelector(".addMaterial");
+            addMaterial.addEventListener("click", (el) => {
+              const component = `<fieldset class="p5">
             <legend>Materials</legend>
             <div class="materialIt">
             <div class="formIt"><label>material name<input type="text" name="name"></label></div>
@@ -433,45 +456,299 @@ for (let i = 0; i < useMethod.length; i++) {
             </div>
           </fieldset>`;
 
-            const insertedElement = document.createElement("div");
-            insertedElement.innerHTML = component;
-            el.target.parentNode.lastElementChild.insertBefore(
-              insertedElement,
-              null
-            );
-          });
+              const insertedElement = document.createElement("div");
+              insertedElement.innerHTML = component;
+              el.target.parentNode.lastElementChild.insertBefore(
+                insertedElement,
+                null
+              );
+            });
 
-          const addDifficult = document.querySelector(".addDifficult");
-          addDifficult.addEventListener("click", (el) => {
-            const component = `<fieldset class="p5">
+            const addDifficult = document.querySelector(".addDifficult");
+            addDifficult.addEventListener("click", (el) => {
+              const component = `<fieldset class="p5">
             <div class="difficultIt">
             <legend>Difficults</legend>
             <div class="formIt"><label>difficult name<input type="text" name="name"></label></div>
             <div class="formIt"><label>converter<input type="number" name="converter" value="0.1" step="0.1"></label></div>
             </div>
           </fieldset>`;
-            const insertedElement = document.createElement("div");
-            insertedElement.innerHTML = component;
-            el.target.parentNode.lastElementChild.insertBefore(
-              insertedElement,
-              null
-            );
-          });
+              const insertedElement = document.createElement("div");
+              insertedElement.innerHTML = component;
+              el.target.parentNode.lastElementChild.insertBefore(
+                insertedElement,
+                null
+              );
+            });
+          }
+          break;
         }
-        break;
       }
-    }
-  });
-}
+    });
+  }
+};
+
+const showQuotation = (data) => {
+  const components = {
+    perDay: `<div class="el perDay">
+    <div id="works">
+       <button type="button" class="addWork" id="addWork">add work</button>
+       <div id="worksList"></div>
+    </div>
+
+    <div class="border">&nbsp</div>
+    <div class="formIt"><label> persons quantity <input type="number" name="personsQuantity" value="1"
+             required readonly></label></div>
+    <div class="formIt"><label> total sum of working days <input type="number" name="totalSumOfWorkingDays" 
+             value="0" required readonly></label></div>
+    <div class="formIt"><label> money of the day <input type="number" name="moneyOfTheDay" step="50" value="400"
+             required></label></div>
+ </div>`,
+    perMeter: `<div class="el perMeter"><div class="materials divOnBtn">
+    <button type="button" class="addMaterial">add material</button>
+    <div class="materialsItem"></div>
+ </div>
+
+ <div class="difficults divOnBtn">
+    <button type="button" class="addDifficult">add difficult</button>
+    <div class="difficultsItem"></div>
+ </div>
+ <div class="numbersOfMeters formIt"><label>number of meters: <input type="number" name="numbersOfMeters" value="200" step="10"></label></div>
+ <div class="pricePerMeter formIt"><label>price per meter: <input type="number" name="pricePerMeter" value="100" step="10"></label></div></div>`,
+    work: `<fieldset class="p5">
+    <!-- add dynamic chande innerHTML in legend. value should be taken from activity name -->
+    <legend>Work</legend>
+    <div class="work">
+       <div class="formIt"><label>work name<input type="text" name="name" class="workName"></label></div>
+       <div class="materials divOnBtn">
+          <button type="button" class="addMaterial">add material</button>
+          <div class="materialsItem"></div>
+       </div>
+       <div class="activities divOnBtn">
+          <button type="button" class="addActivity">add activity</button>
+          <div class="activitiesItem"></div>
+       </div>
+       <div class="formIt"><label>sum of working days: <input type="text" name="sumOfWorkingDays"
+                placeholder="0" readonly></label></div>
+    </div>
+  </fieldset>`,
+    activity: `<fieldset class="p5">
+    <legend>Activity</legend>
+    <div class="formIt"><label>activity name<input type="text" name="name"></label></div>
+    <div class="formIt"><label>number of working days<input type="number" name="numberOfWorkingDays"></label></div>
+  </fieldset>`,
+    material: `<fieldset class="p5">
+    <legend>Materials</legend>
+    <div class="materialIt">
+      <div class="formIt"><label>material name<input type="text" name="name"></label></div>
+      <div class="formIt"><label>quantity<input type="number" name="quantity"></label></div>
+      <div class="formIt"><label>price per item<input type="number" name="pricePerItem"></label></div>
+    </div>
+  </fieldset>`,
+    difficult: `<fieldset class="p5">
+    <div class="difficultIt">
+    <legend>Difficults</legend>
+    <div class="formIt"><label>difficult name<input type="text" name="name"></label></div>
+    <div class="formIt"><label>converter<input type="number" name="converter" value="0.1" step="0.1"></label></div>
+    </div>
+  </fieldset>`,
+  };
+  const mainInfo = document.querySelector(".mainInfo");
+  mainInfo.querySelector("input[name=name").value = data.name;
+  mainInfo.querySelector(`input[value=${data.useMethod}`).checked = true;
+
+  const totalPrices = document.querySelector(".totalPrices");
+  totalPrices.querySelector("input[name=totalMaterialsSumPrice]").value =
+    data.totalMaterialsSumPrice;
+  totalPrices.querySelector("input[name=totalWorkPrice]").value =
+    data.totalWorkPrice;
+  totalPrices.querySelector("input[name=totalPriceNetto]").value =
+    data.totalPriceNetto;
+  totalPrices.querySelector("input[name=totalPriceBrutto]").value =
+    data.totalPriceBrutto;
+
+  if (data.useMethod === "perDay") {
+    const workspaceForm = document.querySelector(".workspaceForm");
+    workspaceForm.innerHTML = components.perDay;
+
+    const addWork = document.querySelector("#addWork");
+    addWork.addEventListener("click", (el) => {
+      const worksList = document.querySelector("#worksList");
+      const insertedElement = document.createElement("div");
+      insertedElement.className = "peon";
+      insertedElement.innerHTML = components.work;
+      el.target.parentNode.lastElementChild.insertBefore(insertedElement, null);
+  
+      const addMaterial = insertedElement.querySelector(".addMaterial");
+      addMaterial.addEventListener("click", (el) => {
+        const insertedElement = document.createElement("div");
+        insertedElement.className = "materialIt";
+        insertedElement.innerHTML = components.material;
+        el.target.parentNode.lastElementChild.insertBefore(insertedElement, null);
+      });
+  
+      const addActivity = insertedElement.querySelector(".addActivity");
+      addActivity.addEventListener("click", (el) => {
+        const insertedElement = document.createElement("div");
+        insertedElement.className = "activityIt";
+        insertedElement.innerHTML = components.activity;
+        el.target.parentNode.lastElementChild.insertBefore(insertedElement, null);
+      });
+    });
+
+    const perDay = document.querySelector(".perDay");
+    perDay.querySelector("input[name=personsQuantity]").value =
+      data.workPerDay.personsQuantity;
+    perDay.querySelector("input[name=totalSumOfWorkingDays]").value =
+      data.workPerDay.totalSumOfWorkingDays;
+    perDay.querySelector("input[name=moneyOfTheDay]").value =
+      data.workPerDay.moneyOfTheDay;
+
+    data.workPerDay.works.forEach((el) => {
+      const insertedElement = document.createElement("div");
+      insertedElement.className = "peon";
+      insertedElement.innerHTML = components.work;
+
+      const addMaterial = insertedElement.querySelector(".addMaterial");
+      addMaterial.addEventListener("click", (el) => {
+        const insertedElement = document.createElement("div");
+        insertedElement.className = "materialIt";
+        insertedElement.innerHTML = components.material;
+        el.target.parentNode.lastElementChild.insertBefore(
+          insertedElement,
+          null
+        );
+      });
+
+      const addActivity = insertedElement.querySelector(".addActivity");
+      addActivity.addEventListener("click", (el) => {
+        const insertedElement = document.createElement("div");
+        insertedElement.className = "activityIt";
+        insertedElement.innerHTML = components.activity;
+        el.target.parentNode.lastElementChild.insertBefore(
+          insertedElement,
+          null
+        );
+      });
+
+      insertedElement.querySelector("input[name=name]").value = el.name;
+      insertedElement.querySelector("input[name=sumOfWorkingDays]").value =
+        el.sumOfWorkingDays;
+
+      const worksList = document.querySelector("#worksList");
+
+      //loops on materials and activities
+
+      for (let i = 0; i < el.materials.length; i++) {
+        const ele = el.materials[i];
+        const insertedElementMaterial = document.createElement("div");
+        insertedElementMaterial.className = "materialIt";
+        insertedElementMaterial.innerHTML = components.material;
+        insertedElementMaterial.querySelector("input[name=name").value =
+          ele.name;
+        insertedElementMaterial.querySelector("input[name=quantity").value =
+          ele.quantity;
+        insertedElementMaterial.querySelector("input[name=pricePerItem").value =
+          ele.pricePerItem;
+
+        const materialsList = insertedElement.querySelector(".materialsItem");
+        materialsList.insertBefore(insertedElementMaterial, null);
+      }
+
+      for (let i = 0; i < el.activities.length; i++) {
+        const ele = el.activities[i];
+        const insertedElementActivity = document.createElement("div");
+        insertedElementActivity.className = "activityIt";
+        insertedElementActivity.innerHTML = components.activity;
+        insertedElementActivity.querySelector("input[name=name").value =
+          ele.name;
+          insertedElementActivity.querySelector("input[name=numberOfWorkingDays").value =
+          ele.numberOfWorkingDays;
+
+        const materialsList = insertedElement.querySelector(".activitiesItem");
+        materialsList.insertBefore(insertedElementActivity, null);
+      }
 
 
+
+      worksList.insertBefore(insertedElement, null);
+    });
+  }
+  if (data.useMethod === "perMeter") {
+    const workspaceForm = document.querySelector(".workspaceForm");
+    workspaceForm.innerHTML = components.perMeter;
+
+    const perMeter = document.querySelector(".perMeter");
+    perMeter.querySelector("input[name=numbersOfMeters]").value =
+      data.workPerDay.numbersOfMeters;
+    perMeter.querySelector("input[name=pricePerMeter]").value =
+      data.workPerDay.pricePerMeter;
+  }
+
+  console.log(data);
+};
+
+window.onload = async () => {
+  try {
+    const quotationsList = await fetchQuotationsList();
+
+    const listComponent = createQuotationsList(quotationsList);
+    quotationList.innerHTML = `<h2>Quotation list: </h2> ${listComponent}`;
+
+    const ul = document.querySelector("#quotationList");
+
+    ul.addEventListener("click", async (el) => {
+      if (el.target.tagName === "UL") return 0;
+      if (el.target.tagName === "DIV") return 0;
+      if (el.target.tagName === "BUTTON") {
+        const quotationName = el.target.getAttribute("holder");
+
+        if (el.target.className === "delete") {
+          const res = await deleteQuotation(quotationName);
+          const resp = await res.json();
+          response.innerText = resp.msg;
+
+          const toRemoveEl = document.querySelector(`#${quotationName}`);
+          toRemoveEl.remove();
+          el.target.parentNode.remove();
+          return 0;
+        }
+        if (el.target.className === "edit") {
+          //TODO
+          const formData = createSendObj();
+          console.log(formData);
+        }
+        return 0;
+      }
+      const name = el.target.id;
+      const data = await fetchOneQuotation(name);
+
+      /////////////
+
+      showQuotation(data);
+
+      /////////////
+    });
+
+    const createNewQuotationBtn = document.querySelector("#createNewQuotation");
+
+    createNewQuotationBtn.addEventListener("click", () => {
+      location.reload();
+    });
+  } catch (err) {
+    console.error(err);
+  }
+
+  document.querySelector("form").reset();
+};
+
+onstartLoop();
 
 const acceptForm = document.querySelector("#acceptForm");
 acceptForm.addEventListener("click", async () => {
   const formValues = sumarize();
 
   try {
-
     const res = await fetch(`${adress}/authrequire/addQuotation`, {
       method: "POST",
       headers: {
@@ -485,7 +762,7 @@ acceptForm.addEventListener("click", async () => {
       case 200:
         const dataa = await res.json();
         response.innerText = dataa.msg;
-      break;
+        break;
       case 201:
         const data = await res.json();
         response.innerText = data.msg;
@@ -495,7 +772,8 @@ acceptForm.addEventListener("click", async () => {
         response.innerText = `Invalid value in ${datav.errors[0].param}.`;
         break;
       case 400:
-        response.innerText = "Something goes wrong. Please try later. Probably bad request";
+        response.innerText =
+          "Something goes wrong. Please try later. Probably bad request";
         break;
       case 500:
         const datap = await res.json();
@@ -507,13 +785,9 @@ acceptForm.addEventListener("click", async () => {
     }
 
     console.log(res);
-    
-    
   } catch (err) {
     response.innerText = "Something goes wrong. Please try again later.";
-
   }
-
 });
 const summarizeForm = document.querySelector("#summarize");
 summarizeForm.addEventListener("click", sumarize);
