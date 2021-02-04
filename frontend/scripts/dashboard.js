@@ -165,7 +165,6 @@ const editQuotation = async (formData) => {
       },
       body: JSON.stringify(formData),
     });
-    console.log(resQuotation);
     return resQuotation;
   } catch (err) {
     console.error(err);
@@ -211,13 +210,13 @@ const createQuotationsList = (quotationsList) => {
 const createSendObj = () => {
   const perDay = document.querySelector(".perDay");
   const perMeter = document.querySelector(".perMeter");
-  const fullForm = document.querySelector("#fullForm").elements;
-
+  const formValues = {};
   if (perDay) {
     const peon = document.querySelectorAll(".peon");
-    formValues.workPerDay = {
-      works: [],
-    };
+    (formValues.useMethod = "perDay"),
+      (formValues.workPerDay = {
+        works: [],
+      });
 
     for (let i = 0; i < peon.length; i++) {
       const el = peon[i];
@@ -270,10 +269,11 @@ const createSendObj = () => {
   if (perMeter) {
     const materialIt = document.querySelectorAll(".materialIt");
     const difficultIt = document.querySelectorAll(".difficultIt");
-    formValues.workPerMeter = {
-      materials: [],
-      difficults: [],
-    };
+    (formValues.useMethod = "perMeter"),
+      (formValues.workPerMeter = {
+        materials: [],
+        difficults: [],
+      });
 
     for (let i = 0; i < materialIt.length; i++) {
       const el = materialIt[i];
@@ -578,21 +578,27 @@ const showQuotation = (data) => {
       insertedElement.className = "peon";
       insertedElement.innerHTML = components.work;
       el.target.parentNode.lastElementChild.insertBefore(insertedElement, null);
-  
+
       const addMaterial = insertedElement.querySelector(".addMaterial");
       addMaterial.addEventListener("click", (el) => {
         const insertedElement = document.createElement("div");
         insertedElement.className = "materialIt";
         insertedElement.innerHTML = components.material;
-        el.target.parentNode.lastElementChild.insertBefore(insertedElement, null);
+        el.target.parentNode.lastElementChild.insertBefore(
+          insertedElement,
+          null
+        );
       });
-  
+
       const addActivity = insertedElement.querySelector(".addActivity");
       addActivity.addEventListener("click", (el) => {
         const insertedElement = document.createElement("div");
         insertedElement.className = "activityIt";
         insertedElement.innerHTML = components.activity;
-        el.target.parentNode.lastElementChild.insertBefore(insertedElement, null);
+        el.target.parentNode.lastElementChild.insertBefore(
+          insertedElement,
+          null
+        );
       });
     });
 
@@ -662,15 +668,13 @@ const showQuotation = (data) => {
         insertedElementActivity.innerHTML = components.activity;
         insertedElementActivity.querySelector("input[name=name").value =
           ele.name;
-          insertedElementActivity.querySelector("input[name=numberOfWorkingDays").value =
-          ele.numberOfWorkingDays;
+        insertedElementActivity.querySelector(
+          "input[name=numberOfWorkingDays"
+        ).value = ele.numberOfWorkingDays;
 
         const materialsList = insertedElement.querySelector(".activitiesItem");
         materialsList.insertBefore(insertedElementActivity, null);
       }
-
-
-
       worksList.insertBefore(insertedElement, null);
     });
   }
@@ -683,9 +687,47 @@ const showQuotation = (data) => {
       data.workPerDay.numbersOfMeters;
     perMeter.querySelector("input[name=pricePerMeter]").value =
       data.workPerDay.pricePerMeter;
-  }
 
-  console.log(data);
+    const addMaterial = document.querySelector(".addMaterial");
+    addMaterial.addEventListener("click", (el) => {
+      const insertedElement = document.createElement("div");
+      insertedElement.innerHTML = components.material;
+      el.target.parentNode.lastElementChild.insertBefore(insertedElement, null);
+    });
+
+    const addDifficult = document.querySelector(".addDifficult");
+    addDifficult.addEventListener("click", (el) => {
+      const insertedElement = document.createElement("div");
+      insertedElement.innerHTML = components.difficult;
+      el.target.parentNode.lastElementChild.insertBefore(insertedElement, null);
+    });
+
+    for (let i = 0; i < data.workPerMeter.materials.length; i++) {
+      const ele = data.workPerMeter.materials[i];
+      const insertedElement = document.createElement("div");
+      insertedElement.className = "materialIt";
+      insertedElement.innerHTML = components.material;
+      insertedElement.querySelector("input[name=name").value = ele.name;
+      insertedElement.querySelector("input[name=quantity").value = ele.quantity;
+      insertedElement.querySelector("input[name=pricePerItem").value =
+        ele.pricePerItem;
+
+      const materialsList = document.querySelector(".materialsItem");
+      materialsList.insertBefore(insertedElement, null);
+    }
+    for (let i = 0; i < data.workPerMeter.difficults.length; i++) {
+      const el = data.workPerMeter.difficults[i];
+      const insertedElement = document.createElement("div");
+      insertedElement.className = "difficultIt";
+      insertedElement.innerHTML = components.difficult;
+      insertedElement.querySelector("input[name=name").value = el.name;
+      insertedElement.querySelector("input[name=converter").value =
+        el.converter;
+
+      const difficultsList = document.querySelector(".difficultsItem");
+      difficultsList.insertBefore(insertedElement, null);
+    }
+  }
 };
 
 window.onload = async () => {
@@ -716,7 +758,6 @@ window.onload = async () => {
         if (el.target.className === "edit") {
           //TODO
           const formData = createSendObj();
-          console.log(formData);
         }
         return 0;
       }
@@ -772,8 +813,13 @@ acceptForm.addEventListener("click", async () => {
         response.innerText = `Invalid value in ${datav.errors[0].param}.`;
         break;
       case 400:
-        response.innerText =
-          "Something goes wrong. Please try later. Probably bad request";
+        const dataf = await res.json();
+        if (dataf.msg) {
+          response.innerText = dataf.msg;
+        } else {
+          response.innerText =
+            "Something goes wrong. Please try later. Probably bad request";
+        }
         break;
       case 500:
         const datap = await res.json();
@@ -783,8 +829,6 @@ acceptForm.addEventListener("click", async () => {
         response.innerText = "Something goes wrong. Please try later.";
         break;
     }
-
-    console.log(res);
   } catch (err) {
     response.innerText = "Something goes wrong. Please try again later.";
   }

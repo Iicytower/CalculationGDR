@@ -12,7 +12,7 @@ import addQuotation from '../../controllers/authrequire/addQuotation';
 router.post('/',
     bodyParser.json(),
     [
-        check("name").isString(),
+        check("name").isString().notEmpty(),
         check("useMethod").isIn(["perDay", "perMeter"]),
         check("totalMaterialsSumPrice").isFloat(),
         check("totalWorkPrice").isFloat(),
@@ -45,31 +45,8 @@ router.post('/',
         check("workPerDay.works.*.personsQuantity").optional().isInt(),
         check("workPerDay.totalSumOfWorkingDays").optional().isFloat(),
         check("workPerDay.moneyOfTheDay").optional().isFloat(),
-        
     ],
     validator(),
-    async (req: Request, res: Response, next: NextFunction) => {
-        const { workPerDay, workPerMeter, useMethod } = req.body
-        switch (useMethod) {
-            case 'perDay':
-                if (workPerDay !== undefined && workPerMeter === undefined) next()
-                else return res.status(400).json({
-                    msg: "You can use workPerDay OR workPerMeter. Both is not possible."
-                });
-                break;
-            case 'perMeter':
-                if (workPerMeter !== undefined && workPerDay === undefined) next()
-                else return res.status(400).json({
-                    msg: "You can use workPerDay OR workPerMeter. Both is not possible."
-                });
-                break;
-            default:
-                return res.status(400).json({
-                    msg: `useMethod must be "perDay" or "perMeter". You send ${useMethod}`,
-                })
-                break;
-        }
-    },
     addQuotation);
 
 
