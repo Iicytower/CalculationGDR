@@ -199,7 +199,6 @@ const createQuotationsList = (quotationsList) => {
         </li>
         <div class="delEditBtns">
           <button type="button" class="delete" holder="${name}">delete</button>
-          <button type="button" class="edit" holder="${name}">edit</button>
         </div>
         `
     );
@@ -207,17 +206,42 @@ const createQuotationsList = (quotationsList) => {
   return `<div class="quotationListUl"><ul>${count}</ul></div>`;
 };
 
-const createSendObj = () => {
+const createSendObj = async () => {
   const perDay = document.querySelector(".perDay");
   const perMeter = document.querySelector(".perMeter");
-  const formValues = {};
-  if (perDay) {
+  const sendObj = {};
+
+  const totalPrices = document.querySelector(".totalPrices");
+
+  sendObj.totalMaterialsSumPrice = Number(
+    totalPrices.querySelector("input[name=totalMaterialsSumPrice]").value
+  );  
+  sendObj.totalWorkPrice = Number(
+    totalPrices.querySelector("input[name=totalWorkPrice]").value
+  );  
+  sendObj.totalPriceNetto = Number(
+    totalPrices.querySelector("input[name=totalPriceNetto]").value
+  );  
+  sendObj.totalPriceBrutto = Number(
+    totalPrices.querySelector("input[name=totalPriceBrutto]").value
+  );  
+  sendObj.name = document
+    .querySelector(".mainInfo")
+    .querySelector("input[name=name]").value;  console.log("dupa", sendObj);
+
+  const useMethod = document.querySelectorAll("input[name=useMethod]");
+
+  for (let i = 0; i < useMethod.length; i++) {
+    const el = useMethod[i];
+    if(el.checked)sendObj.useMethod = el.value
+  }
+
+  if (sendObj.useMethod === "perDay") {
     const peon = document.querySelectorAll(".peon");
-    (formValues.useMethod = "perDay"),
-      (formValues.workPerDay = {
+    (sendObj.useMethod = "perDay"),
+      (sendObj.workPerDay = {
         works: [],
       });
-
     for (let i = 0; i < peon.length; i++) {
       const el = peon[i];
       const currentWork = {
@@ -252,32 +276,33 @@ const createSendObj = () => {
         });
       }
 
-      formValues.workPerDay.works.push(currentWork);
+      sendObj.workPerDay.works.push(currentWork);
     }
 
-    formValues.workPerDay.personsQuantity = Number(
+    sendObj.workPerDay.personsQuantity = Number(
       perDay.querySelector("input[name=personsQuantity]").value
     );
-    formValues.workPerDay.totalSumOfWorkingDays = Number(
+    sendObj.workPerDay.totalSumOfWorkingDays = Number(
       perDay.querySelector("input[name=totalSumOfWorkingDays]").value
     );
-    formValues.workPerDay.moneyOfTheDay = Number(
+    sendObj.workPerDay.moneyOfTheDay = Number(
       perDay.querySelector("input[name=moneyOfTheDay]").value
     );
+    return sendObj;
   }
 
-  if (perMeter) {
+  if (sendObj.useMethod === "perMeter") {
     const materialIt = document.querySelectorAll(".materialIt");
     const difficultIt = document.querySelectorAll(".difficultIt");
-    (formValues.useMethod = "perMeter"),
-      (formValues.workPerMeter = {
+    (sendObj.useMethod = "perMeter"),
+      (sendObj.workPerMeter = {
         materials: [],
         difficults: [],
       });
 
     for (let i = 0; i < materialIt.length; i++) {
       const el = materialIt[i];
-      formValues.workPerMeter.materials.push({
+      sendObj.workPerMeter.materials.push({
         name: el.querySelector("input[name=name]").value,
         quantity: Number(el.querySelector("input[name=quantity]").value),
         pricePerItem: Number(
@@ -288,39 +313,21 @@ const createSendObj = () => {
 
     for (let i = 0; i < difficultIt.length; i++) {
       const el = difficultIt[i];
-      formValues.workPerMeter.difficults.push({
+      sendObj.workPerMeter.difficults.push({
         name: el.querySelector("input[name=name]").value,
         converter: Number(el.querySelector("input[name=converter]").value),
       });
     }
 
-    formValues.workPerMeter.numbersOfMeters = Number(
+    sendObj.workPerMeter.numbersOfMeters = Number(
       perMeter.querySelector("input[name=numbersOfMeters]").value
     );
-    formValues.workPerMeter.pricePerMeter = Number(
+    sendObj.workPerMeter.pricePerMeter = Number(
       perMeter.querySelector("input[name=pricePerMeter]").value
     );
+    return sendObj;
   }
-
-  const totalPrices = document.querySelector(".totalPrices");
-
-  formValues.totalMaterialsSumPrice = Number(
-    totalPrices.querySelector("input[name=totalMaterialsSumPrice]").value
-  );
-  formValues.totalWorkPrice = Number(
-    totalPrices.querySelector("input[name=totalWorkPrice]").value
-  );
-  formValues.totalPriceNetto = Number(
-    totalPrices.querySelector("input[name=totalPriceNetto]").value
-  );
-  formValues.totalPriceBrutto = Number(
-    totalPrices.querySelector("input[name=totalPriceBrutto]").value
-  );
-  formValues.name = document
-    .querySelector(".mainInfo")
-    .querySelector("input[name=name]").value;
-
-  return formValues;
+  return sendObj;
 };
 
 const sumarize = () => {
@@ -486,6 +493,77 @@ const onstartLoop = () => {
       }
     });
   }
+  const acceptForm = document.querySelector("#acceptForm");
+  acceptForm.addEventListener("click", async () => {
+    const formValues = sumarize();
+    try {
+      const res = await fetch(`${adress}/authrequire/addQuotation`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.token}`,
+        },
+        body: JSON.stringify(formValues),
+      });
+
+      switch (res.status) {
+        case 200:
+          const dataa = await res.json();
+          response.innerText = dataa.msg;
+          break;
+        case 201:
+          const data = await res.json();
+          response.innerText = data.msg;
+          break;
+        case 422:
+          const datav = await res.json();
+          response.innerText = `Invalid value in ${datav.errors[0].param}.`;
+          break;
+        case 400:
+          const dataf = await res.json();
+          if (dataf.msg) {
+            response.innerText = dataf.msg;
+          } else {
+            response.innerText =
+              "Something goes wrong. Please try later. Probably bad request";
+          }
+          break;
+        case 500:
+          const datap = await res.json();
+          response.innerText = datap.msg;
+          break;
+        default:
+          response.innerText = "Something goes wrong. Please try later.";
+          break;
+      }
+    } catch (err) {
+      response.innerText = "Something goes wrong. Please try again later.";
+    }
+  });
+
+  const summarizeForm = document.querySelector("#summarize");
+  summarizeForm.addEventListener("click", sumarize);
+
+  const edit = document.querySelector("#edit");
+  edit.addEventListener("click", async () => {
+    const valuesForm = await sumarize(); ///////////
+    console.log(valuesForm);
+    try {
+      const res = await fetch(`${adress}/authrequire/editQuotation`, {
+        method: "put",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.token}`,
+        },
+        body: JSON.stringify(valuesForm),
+      });
+
+      // console.log(res);
+      // console.log(await res.json());
+    } catch (err) {
+      console.error(err);
+    }
+  });
 };
 
 const showQuotation = (data) => {
@@ -755,10 +833,6 @@ window.onload = async () => {
           el.target.parentNode.remove();
           return 0;
         }
-        if (el.target.className === "edit") {
-          //TODO
-          const formData = createSendObj();
-        }
         return 0;
       }
       const name = el.target.id;
@@ -774,7 +848,47 @@ window.onload = async () => {
     const createNewQuotationBtn = document.querySelector("#createNewQuotation");
 
     createNewQuotationBtn.addEventListener("click", () => {
-      location.reload();
+      const formComponent = ` <form id="fullForm" method="POST" enctype="multipart/form-data">
+      <div class="mainInfo">
+
+         <div class="el">
+            <label>name: <input type="text" name="name" placeholder="enter the name of quotation" require></label>
+         </div>
+
+         <div class="el">
+            <fieldset>
+               <legend>Method</legend>
+               <div><label><input type="radio" value="perDay" name="useMethod">perDay</label></div>
+               <div><label><input type="radio" value="perMeter" name="useMethod">perMeter</label></div>
+            </fieldset>
+         </div>
+
+      </div>
+      <div class="workspaceForm">
+
+      </div>
+      <div class="totalPrices">
+         <div class="el formIt"><label>total materials sum price: <input type="text" name="totalMaterialsSumPrice"
+                  placeholder="0" readonly></label></div>
+         <div class="el formIt"><label>total work price: <input type="text" name="totalWorkPrice" placeholder="0"
+                  readonly></label></div>
+         <div class="el formIt"><label>total price netto: <input type="text" name="totalPriceNetto" placeholder="0"
+                  readonly></label></div>
+         <div class="el formIt"><label>total price brutto: <input type="text" name="totalPriceBrutto" placeholder="0"
+                  readonly></label></div>
+      </div>
+      <div class="formButtons">
+
+         <input type="reset" value="Clear form">
+         <input type="button" value="add quotation to database" id="acceptForm">
+         <input type="button" value="summarize" id="summarize">
+      </div>
+   </form>`;
+      const form = document.querySelector("#workspace");
+
+      form.innerHTML = formComponent;
+
+      onstartLoop();
     });
   } catch (err) {
     console.error(err);
@@ -784,54 +898,3 @@ window.onload = async () => {
 };
 
 onstartLoop();
-
-const acceptForm = document.querySelector("#acceptForm");
-acceptForm.addEventListener("click", async () => {
-  const formValues = sumarize();
-
-  try {
-    const res = await fetch(`${adress}/authrequire/addQuotation`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.token}`,
-      },
-      body: JSON.stringify(formValues),
-    });
-
-    switch (res.status) {
-      case 200:
-        const dataa = await res.json();
-        response.innerText = dataa.msg;
-        break;
-      case 201:
-        const data = await res.json();
-        response.innerText = data.msg;
-        break;
-      case 422:
-        const datav = await res.json();
-        response.innerText = `Invalid value in ${datav.errors[0].param}.`;
-        break;
-      case 400:
-        const dataf = await res.json();
-        if (dataf.msg) {
-          response.innerText = dataf.msg;
-        } else {
-          response.innerText =
-            "Something goes wrong. Please try later. Probably bad request";
-        }
-        break;
-      case 500:
-        const datap = await res.json();
-        response.innerText = datap.msg;
-        break;
-      default:
-        response.innerText = "Something goes wrong. Please try later.";
-        break;
-    }
-  } catch (err) {
-    response.innerText = "Something goes wrong. Please try again later.";
-  }
-});
-const summarizeForm = document.querySelector("#summarize");
-summarizeForm.addEventListener("click", sumarize);
