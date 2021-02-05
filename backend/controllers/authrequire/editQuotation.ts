@@ -20,6 +20,10 @@ export default async (req: Request, res: Response) => {
          doc.useMethod = data.useMethod;
          doc.workPerDay = data.workPerDay;
          doc.workPerMeter = data.workPerMeter;
+         doc.totalMaterialsSumPrice = data.totalMaterialsSumPrice;
+         doc.totalWorkPrice = data.totalWorkPrice;
+         doc.totalPriceNetto = data.totalPriceNetto;
+         doc.totalPriceBrutto = data.totalPriceBrutto;
       }else{
          return res.status(404).json({
             msg: "Quotation not found",
@@ -29,7 +33,6 @@ export default async (req: Request, res: Response) => {
 
       //TODO handle error
       const dbRes = await doc.save();
-   
       return res.status(200).json({
          msg: "Quotation edited",
       });

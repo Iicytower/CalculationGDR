@@ -19,7 +19,7 @@ const createWorkComp = () => {
 
     <div class="border">&nbsp</div>
     <div class="formIt"><label> persons quantity <input type="number" name="personsQuantity" value="1"
-             required readonly></label></div>
+             required></label></div>
     <div class="formIt"><label> total sum of working days <input type="number" name="totalSumOfWorkingDays" 
              value="0" required readonly></label></div>
     <div class="formIt"><label> money of the day <input type="number" name="moneyOfTheDay" step="50" value="400"
@@ -85,7 +85,7 @@ const createWorkComp = () => {
     const addMaterial = insertedElement.querySelector(".addMaterial");
     addMaterial.addEventListener("click", (el) => {
       const insertedElement = document.createElement("div");
-      insertedElement.className = "materialIt";
+      insertedElement.className = "materialIte";
       insertedElement.innerHTML = components.material;
       el.target.parentNode.lastElementChild.insertBefore(insertedElement, null);
     });
@@ -207,41 +207,41 @@ const createQuotationsList = (quotationsList) => {
 };
 
 const createSendObj = async () => {
-  const perDay = document.querySelector(".perDay");
-  const perMeter = document.querySelector(".perMeter");
   const sendObj = {};
 
   const totalPrices = document.querySelector(".totalPrices");
 
-  sendObj.totalMaterialsSumPrice = Number(
-    totalPrices.querySelector("input[name=totalMaterialsSumPrice]").value
-  );  
-  sendObj.totalWorkPrice = Number(
-    totalPrices.querySelector("input[name=totalWorkPrice]").value
-  );  
-  sendObj.totalPriceNetto = Number(
-    totalPrices.querySelector("input[name=totalPriceNetto]").value
-  );  
-  sendObj.totalPriceBrutto = Number(
-    totalPrices.querySelector("input[name=totalPriceBrutto]").value
-  );  
-  sendObj.name = document
-    .querySelector(".mainInfo")
-    .querySelector("input[name=name]").value;  console.log("dupa", sendObj);
+  sendObj.totalMaterialsSumPrice = Number(totalPrices.querySelector("input[name=totalMaterialsSumPrice]").value);
+  sendObj.totalWorkPrice = Number(totalPrices.querySelector("input[name=totalWorkPrice]").value);
+  sendObj.totalPriceNetto = Number(totalPrices.querySelector("input[name=totalPriceNetto]").value);
+  sendObj.totalPriceBrutto = Number(totalPrices.querySelector("input[name=totalPriceBrutto]").value);
 
+  sendObj.name = document.querySelector(".mainInfo").querySelector("input[name=name]").value;
   const useMethod = document.querySelectorAll("input[name=useMethod]");
 
   for (let i = 0; i < useMethod.length; i++) {
     const el = useMethod[i];
-    if(el.checked)sendObj.useMethod = el.value
+    if (el.checked) sendObj.useMethod = el.value;
   }
 
   if (sendObj.useMethod === "perDay") {
-    const peon = document.querySelectorAll(".peon");
-    (sendObj.useMethod = "perDay"),
-      (sendObj.workPerDay = {
+    const perDay = document.querySelector(".perDay");
+    const sendDay = {
+      name: sendObj.name,
+      useMethod: sendObj.useMethod,
+      totalMaterialsSumPrice: sendObj.totalMaterialsSumPrice,
+      totalWorkPrice: sendObj.totalWorkPrice,
+      totalPriceNetto: sendObj.totalPriceNetto,
+      totalPriceBrutto: sendObj.totalPriceBrutto,
+      workPerDay: {
         works: [],
-      });
+        moneyOfTheDay: Number(perDay.querySelector("input[name=moneyOfTheDay]").value),
+        personsQuantity: Number(perDay.querySelector("input[name=personsQuantity]").value),
+        totalSumOfWorkingDays: Number(perDay.querySelector("input[name=totalSumOfWorkingDays]").value),
+      },
+    }
+    const peon = document.querySelectorAll(".peon");
+
     for (let i = 0; i < peon.length; i++) {
       const el = peon[i];
       const currentWork = {
@@ -253,9 +253,9 @@ const createSendObj = async () => {
         activities: [],
       };
 
-      const materialsItem = el.querySelectorAll(".materialIt");
-      for (let j = 0; j < materialsItem.length; j++) {
-        const ele = materialsItem[j];
+      const materialIt = el.querySelectorAll(".materialIt");
+      for (let j = 0; j < materialIt.length; j++) {
+        const ele = materialIt[j];
         currentWork.materials.push({
           name: ele.querySelector("input[name=name]").value,
           quantity: Number(ele.querySelector("input[name=quantity]").value),
@@ -276,65 +276,58 @@ const createSendObj = async () => {
         });
       }
 
-      sendObj.workPerDay.works.push(currentWork);
+      sendDay.workPerDay.works.push(currentWork);
     }
-
-    sendObj.workPerDay.personsQuantity = Number(
-      perDay.querySelector("input[name=personsQuantity]").value
-    );
-    sendObj.workPerDay.totalSumOfWorkingDays = Number(
-      perDay.querySelector("input[name=totalSumOfWorkingDays]").value
-    );
-    sendObj.workPerDay.moneyOfTheDay = Number(
-      perDay.querySelector("input[name=moneyOfTheDay]").value
-    );
-    return sendObj;
+    return sendDay;
   }
 
   if (sendObj.useMethod === "perMeter") {
-    const materialIt = document.querySelectorAll(".materialIt");
-    const difficultIt = document.querySelectorAll(".difficultIt");
-    (sendObj.useMethod = "perMeter"),
-      (sendObj.workPerMeter = {
+    const perMeter = document.querySelector(".perMeter");
+    const materialIt = perMeter.querySelectorAll(".materialIt");
+    const difficultIt = perMeter.querySelectorAll(".difficultIt");
+
+    const sendMeter = {
+      name: sendObj.name,
+      useMethod: sendObj.useMethod,
+      totalMaterialsSumPrice: sendObj.totalMaterialsSumPrice,
+      totalWorkPrice: sendObj.totalWorkPrice,
+      totalPriceNetto: sendObj.totalPriceNetto,
+      totalPriceBrutto: sendObj.totalPriceBrutto,
+      workPerMeter: {
         materials: [],
         difficults: [],
-      });
+        numbersOfMeters: Number(perMeter.querySelector("input[name=numbersOfMeters]").value),
+        pricePerMeter: Number(perMeter.querySelector("input[name=pricePerMeter]").value),
+      },
+    }
 
     for (let i = 0; i < materialIt.length; i++) {
       const el = materialIt[i];
-      sendObj.workPerMeter.materials.push({
+      sendMeter.workPerMeter.materials.push({
         name: el.querySelector("input[name=name]").value,
         quantity: Number(el.querySelector("input[name=quantity]").value),
-        pricePerItem: Number(
-          el.querySelector("input[name=pricePerItem]").value
-        ),
+        pricePerItem: Number(el.querySelector("input[name=pricePerItem]").value),
       });
     }
 
     for (let i = 0; i < difficultIt.length; i++) {
       const el = difficultIt[i];
-      sendObj.workPerMeter.difficults.push({
+      sendMeter.workPerMeter.difficults.push({
         name: el.querySelector("input[name=name]").value,
         converter: Number(el.querySelector("input[name=converter]").value),
       });
     }
 
-    sendObj.workPerMeter.numbersOfMeters = Number(
-      perMeter.querySelector("input[name=numbersOfMeters]").value
-    );
-    sendObj.workPerMeter.pricePerMeter = Number(
-      perMeter.querySelector("input[name=pricePerMeter]").value
-    );
-    return sendObj;
+    return sendMeter;
   }
   return sendObj;
 };
 
-const sumarize = () => {
-  const formValues = createSendObj();
-
+const sumarize = async () => {
+  const formValues = await createSendObj();
   if (formValues.useMethod === "perDay") {
     let totalMaterialsSumPrice = 0;
+    let totalSumOfWorkingDays = 0;
     formValues.workPerDay.works.forEach((el) => {
       el.sumOfWorkingDays = el.activities.reduce(
         (acc, cur) => acc + cur.numberOfWorkingDays,
@@ -348,8 +341,9 @@ const sumarize = () => {
         ) /
           123) *
         100;
-      formValues.workPerDay.totalSumOfWorkingDays += el.sumOfWorkingDays;
+      totalSumOfWorkingDays += el.sumOfWorkingDays;
     });
+    formValues.workPerDay.totalSumOfWorkingDays = totalSumOfWorkingDays;
     formValues.totalMaterialsSumPrice = totalMaterialsSumPrice;
     formValues.totalWorkPrice =
       formValues.workPerDay.personsQuantity *
@@ -402,7 +396,6 @@ const sumarize = () => {
     formValues.totalPriceNetto;
   totalPrices.querySelector("input[name=totalPriceBrutto]").value =
     formValues.totalPriceBrutto;
-
   return formValues;
 };
 
@@ -427,7 +420,7 @@ const onstartLoop = () => {
   
           <div class="border">&nbsp</div>
           <div class="formIt"><label> persons quantity <input type="number" name="personsQuantity" value="1"
-                   required readonly></label></div>
+                   required></label></div>
           <div class="formIt"><label> total sum of working days <input type="number" name="totalSumOfWorkingDays" 
                    value="0" required readonly></label></div>
           <div class="formIt"><label> money of the day <input type="number" name="moneyOfTheDay" step="50" value="400"
@@ -457,9 +450,9 @@ const onstartLoop = () => {
               const component = `<fieldset class="p5">
             <legend>Materials</legend>
             <div class="materialIt">
-            <div class="formIt"><label>material name<input type="text" name="name"></label></div>
-            <div class="formIt"><label>quantity<input type="number" name="quantity"></label></div>
-            <div class="formIt"><label>price per item<input type="number" name="pricePerItem"></label></div>
+              <div class="formIt"><label>material name<input type="text" name="name"></label></div>
+              <div class="formIt"><label>quantity<input type="number" name="quantity"></label></div>
+              <div class="formIt"><label>price per item<input type="number" name="pricePerItem"></label></div>
             </div>
           </fieldset>`;
 
@@ -544,10 +537,10 @@ const onstartLoop = () => {
   const summarizeForm = document.querySelector("#summarize");
   summarizeForm.addEventListener("click", sumarize);
 
+
   const edit = document.querySelector("#edit");
   edit.addEventListener("click", async () => {
     const valuesForm = await sumarize(); ///////////
-    console.log(valuesForm);
     try {
       const res = await fetch(`${adress}/authrequire/editQuotation`, {
         method: "put",
@@ -560,6 +553,43 @@ const onstartLoop = () => {
 
       // console.log(res);
       // console.log(await res.json());
+
+      switch (res.status) {
+        case 200:
+          const dataa = await res.json();
+          response.innerText = dataa.msg;
+          break;
+        case 201:
+          const data = await res.json();
+          response.innerText = data.msg;
+          break;
+        case 401:
+          const datao = await res.json();
+          response.innerText = datao.msg;
+        case 404:
+          const datan = await res.json();
+          response.innerText = datan.msg;
+        case 422:
+          const datav = await res.json();
+          response.innerText = `Invalid value in ${datav.errors[0].param}.`;
+          break;
+        case 400:
+          const dataf = await res.json();
+          if (dataf.msg) {
+            response.innerText = dataf.msg;
+          } else {
+            response.innerText =
+              "Something goes wrong. Please try later. Probably bad request";
+          }
+          break;
+        case 500:
+          const datap = await res.json();
+          response.innerText = datap.msg;
+          break;
+        default:
+          response.innerText = "Something goes wrong. Please try later.";
+          break;
+      }
     } catch (err) {
       console.error(err);
     }
@@ -576,7 +606,7 @@ const showQuotation = (data) => {
 
     <div class="border">&nbsp</div>
     <div class="formIt"><label> persons quantity <input type="number" name="personsQuantity" value="1"
-             required readonly></label></div>
+             required></label></div>
     <div class="formIt"><label> total sum of working days <input type="number" name="totalSumOfWorkingDays" 
              value="0" required readonly></label></div>
     <div class="formIt"><label> money of the day <input type="number" name="moneyOfTheDay" step="50" value="400"
@@ -660,7 +690,7 @@ const showQuotation = (data) => {
       const addMaterial = insertedElement.querySelector(".addMaterial");
       addMaterial.addEventListener("click", (el) => {
         const insertedElement = document.createElement("div");
-        insertedElement.className = "materialIt";
+        insertedElement.className = "materialIte";
         insertedElement.innerHTML = components.material;
         el.target.parentNode.lastElementChild.insertBefore(
           insertedElement,
@@ -696,7 +726,7 @@ const showQuotation = (data) => {
       const addMaterial = insertedElement.querySelector(".addMaterial");
       addMaterial.addEventListener("click", (el) => {
         const insertedElement = document.createElement("div");
-        insertedElement.className = "materialIt";
+        insertedElement.className = "materialIte";
         insertedElement.innerHTML = components.material;
         el.target.parentNode.lastElementChild.insertBefore(
           insertedElement,
@@ -726,7 +756,7 @@ const showQuotation = (data) => {
       for (let i = 0; i < el.materials.length; i++) {
         const ele = el.materials[i];
         const insertedElementMaterial = document.createElement("div");
-        insertedElementMaterial.className = "materialIt";
+        insertedElementMaterial.className = "materialIte";
         insertedElementMaterial.innerHTML = components.material;
         insertedElementMaterial.querySelector("input[name=name").value =
           ele.name;
@@ -783,7 +813,7 @@ const showQuotation = (data) => {
     for (let i = 0; i < data.workPerMeter.materials.length; i++) {
       const ele = data.workPerMeter.materials[i];
       const insertedElement = document.createElement("div");
-      insertedElement.className = "materialIt";
+      insertedElement.className = "materialIte";
       insertedElement.innerHTML = components.material;
       insertedElement.querySelector("input[name=name").value = ele.name;
       insertedElement.querySelector("input[name=quantity").value = ele.quantity;
@@ -838,11 +868,7 @@ window.onload = async () => {
       const name = el.target.id;
       const data = await fetchOneQuotation(name);
 
-      /////////////
-
       showQuotation(data);
-
-      /////////////
     });
 
     const createNewQuotationBtn = document.querySelector("#createNewQuotation");
