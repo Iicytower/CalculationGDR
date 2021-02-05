@@ -37,7 +37,6 @@ const createWorkComp = () => {
  <div class="numbersOfMeters formIt"><label>number of meters: <input type="number" name="numbersOfMeters" value="200" step="10"></label></div>
  <div class="pricePerMeter formIt"><label>price per meter: <input type="number" name="pricePerMeter" value="100" step="10"></label></div></div>`,
     work: `<fieldset class="p5">
-    <!-- add dynamic chande innerHTML in legend. value should be taken from activity name -->
     <legend>Work</legend>
     <div class="work">
        <div class="formIt"><label>work name<input type="text" name="name" class="workName"></label></div>
@@ -488,7 +487,7 @@ const onstartLoop = () => {
   }
   const acceptForm = document.querySelector("#acceptForm");
   acceptForm.addEventListener("click", async () => {
-    const formValues = sumarize();
+    const formValues = await sumarize();
     try {
       const res = await fetch(`${adress}/authrequire/addQuotation`, {
         method: "POST",
@@ -540,7 +539,7 @@ const onstartLoop = () => {
 
   const edit = document.querySelector("#edit");
   edit.addEventListener("click", async () => {
-    const valuesForm = await sumarize(); ///////////
+    const valuesForm = await sumarize();
     try {
       const res = await fetch(`${adress}/authrequire/editQuotation`, {
         method: "put",
@@ -550,9 +549,6 @@ const onstartLoop = () => {
         },
         body: JSON.stringify(valuesForm),
       });
-
-      // console.log(res);
-      // console.log(await res.json());
 
       switch (res.status) {
         case 200:
@@ -624,7 +620,6 @@ const showQuotation = (data) => {
  <div class="numbersOfMeters formIt"><label>number of meters: <input type="number" name="numbersOfMeters" value="200" step="10"></label></div>
  <div class="pricePerMeter formIt"><label>price per meter: <input type="number" name="pricePerMeter" value="100" step="10"></label></div></div>`,
     work: `<fieldset class="p5">
-    <!-- add dynamic chande innerHTML in legend. value should be taken from activity name -->
     <legend>Work</legend>
     <div class="work">
        <div class="formIt"><label>work name<input type="text" name="name" class="workName"></label></div>
@@ -750,8 +745,6 @@ const showQuotation = (data) => {
         el.sumOfWorkingDays;
 
       const worksList = document.querySelector("#worksList");
-
-      //loops on materials and activities
 
       for (let i = 0; i < el.materials.length; i++) {
         const ele = el.materials[i];
