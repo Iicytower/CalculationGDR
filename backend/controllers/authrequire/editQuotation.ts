@@ -6,18 +6,8 @@ export default async (req: Request, res: Response) => {
    if (req.user === undefined) return res.status(401).json({
       msg: "Unauthorized",
    });
-   interface User {
-      _id?: String,
-   }
 
-   const currentUser: User = req.user
    const data = req.body;
-
-   if(String(currentUser._id) !== String(data.owner)){
-      return res.status(401).json({
-         msg: "It is not your Quotation. Access denied."
-      })
-   }
 
    try {
       interface Document {
@@ -27,23 +17,27 @@ export default async (req: Request, res: Response) => {
          workPerMeter?: any
       }
 
-      const doc: Document | any = await Quotation.findOne({
-         _id: data._id,
-         owner: currentUser._id,
-      })
-   
+
+      const doc: any = await Quotation.findOne({
+         name: data.name
+      });
       if(doc){
          doc.name = data.name;
          doc.useMethod = data.useMethod;
          doc.workPerDay = data.workPerDay;
          doc.workPerMeter = data.workPerMeter;
+         doc.totalMaterialsSumPrice = data.totalMaterialsSumPrice;
+         doc.totalWorkPrice = data.totalWorkPrice;
+         doc.totalPriceNetto = data.totalPriceNetto;
+         doc.totalPriceBrutto = data.totalPriceBrutto;
       }else{
          return res.status(404).json({
             msg: "Quotation not found",
          });
       }
+
+      //TODO handle error
       const dbRes = await doc.save();
-   
       return res.status(200).json({
          msg: "Quotation edited",
       });

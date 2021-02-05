@@ -26,7 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: "http://localhost:8080",
+    // origin: "http://localhost:8080",
 }));
 
 import indexRouter from "./routes/index";

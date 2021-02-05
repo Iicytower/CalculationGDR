@@ -11,8 +11,6 @@ import addQuotation from '../../controllers/authrequire/editQuotation';
 router.put('/', 
 bodyParser.json(),
 [
-   check("_id").isString(),
-   check("owner").isString(),
    check("name").isString(),
    check("useMethod").isIn(["perDay", "perMeter"]),
    check("totalMaterialsSumPrice").isFloat(),

@@ -5,14 +5,14 @@ import { check } from "express-validator";
 
 const router = Router();
 
-import delQuotation from '../../controllers/authrequire/delQuotation';
+import dowOneUserQuotation from '../../controllers/authrequire/dowOneUserQuotation';
 
-router.delete('/:name', 
+router.get('/:name', 
 bodyParser.json(),
 [
+   // check("name").isString(),
 ],
 validator(),
-delQuotation);
-
+dowOneUserQuotation);
 
 export default router;

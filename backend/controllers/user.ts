@@ -5,15 +5,14 @@ import jwt from 'jsonwebtoken';
 export default {
     register: async (req: Request, res: Response, next: NextFunction) => {
         const { nickname, password } = req.body;
-        
+
         try {
 
             const regexpPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[\!\@\#\$\%\^\&\*\(\)])(?=.*[A-Z])(?!.*\s).{8,}$/g;
             const isPasswordCorrect = regexpPassword.test(password);
 
-            if(!isPasswordCorrect){
+            if (!isPasswordCorrect) {
                 return res.status(400).json({
-                    status: "failure",
                     msg: "Password must contain small and big letter, digit and minimum one special character. Available characters: ! @ # $ % ^ & * ( )"
                 })
             }
@@ -21,14 +20,12 @@ export default {
             const isExist = await User.findOne({ nickname });
 
             if (isExist) return res.status(400).json({
-                status: "failure",
                 msg: `User with nickname ${nickname} exist. Use diffrent.`
             });
 
-        } catch (err){
+        } catch (err) {
             console.error(err);
             return res.status(500).json({
-                status: `failure`,
                 msg: "Something goes wrong with register"
             });
         }
@@ -40,14 +37,12 @@ export default {
             await User.register(newUser, password)
 
             return res.status(201).json({
-                status: `succes`,
                 msg: `success register user with nickname ${nickname}.`,
             });
 
-        } catch (err){
+        } catch (err) {
             console.error(err);
             return res.status(500).json({
-                status: `failure`,
                 msg: "Somthing goes wrong with register",
             });
         }
@@ -56,31 +51,30 @@ export default {
 
     login: async (req: Request, res: Response) => {
 
-        if(req.user === undefined) return res.status(500);
-        
+        if (req.user === undefined) return res.status(500);
+
         interface User {
             _id?: String,
         }
         const usr: User = req.user
-
         try {
             const token = jwt.sign(
-                { id: usr._id }, 
-                String(process.env.JWT_SECRET), 
-                {expiresIn: 1000*60*8} //8hours
-                )
-    
+                { id: usr._id },
+                String(process.env.JWT_SECRET),
+                { expiresIn: 1000 * 60 * 8 } //8hours
+            )
+
             return res.status(200).json({
-                status: 'success',
                 msg: 'succesfully login',
                 token,
             });
+
         } catch (err) {
             console.error(err);
             return res.status(500).json({
-                msg: "Somethiing goes wrong with login"
+                msg: "Something goes wrong with login",
             })
-        }
 
+        }
     }
 }

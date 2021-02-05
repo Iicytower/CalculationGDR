@@ -17,6 +17,10 @@ export default async (req: Request, res: Response) => {
       owner: currentUser._id,
     });
 
+    if (data === null) return res.status(404).json({
+      msg: "There is no such quotation",
+    });
+
     return res.status(200).json({
       msg: `All quotations by ${currentUser._id}`,
       data,

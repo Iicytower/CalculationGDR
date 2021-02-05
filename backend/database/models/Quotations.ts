@@ -45,6 +45,7 @@ const QuotationSchema = new Schema({
         }],
         totalSumOfWorkingDays: Number,
         moneyOfTheDay: Number,
+        personsQuantity: Number,
     },
     totalMaterialsSumPrice: Number,
     totalWorkPrice: Number,
