@@ -210,12 +210,22 @@ const createSendObj = async () => {
 
   const totalPrices = document.querySelector(".totalPrices");
 
-  sendObj.totalMaterialsSumPrice = Number(totalPrices.querySelector("input[name=totalMaterialsSumPrice]").value);
-  sendObj.totalWorkPrice = Number(totalPrices.querySelector("input[name=totalWorkPrice]").value);
-  sendObj.totalPriceNetto = Number(totalPrices.querySelector("input[name=totalPriceNetto]").value);
-  sendObj.totalPriceBrutto = Number(totalPrices.querySelector("input[name=totalPriceBrutto]").value);
+  sendObj.totalMaterialsSumPrice = Number(
+    totalPrices.querySelector("input[name=totalMaterialsSumPrice]").value
+  );
+  sendObj.totalWorkPrice = Number(
+    totalPrices.querySelector("input[name=totalWorkPrice]").value
+  );
+  sendObj.totalPriceNetto = Number(
+    totalPrices.querySelector("input[name=totalPriceNetto]").value
+  );
+  sendObj.totalPriceBrutto = Number(
+    totalPrices.querySelector("input[name=totalPriceBrutto]").value
+  );
 
-  sendObj.name = document.querySelector(".mainInfo").querySelector("input[name=name]").value;
+  sendObj.name = document
+    .querySelector(".mainInfo")
+    .querySelector("input[name=name]").value;
   const useMethod = document.querySelectorAll("input[name=useMethod]");
 
   for (let i = 0; i < useMethod.length; i++) {
@@ -234,11 +244,17 @@ const createSendObj = async () => {
       totalPriceBrutto: sendObj.totalPriceBrutto,
       workPerDay: {
         works: [],
-        moneyOfTheDay: Number(perDay.querySelector("input[name=moneyOfTheDay]").value),
-        personsQuantity: Number(perDay.querySelector("input[name=personsQuantity]").value),
-        totalSumOfWorkingDays: Number(perDay.querySelector("input[name=totalSumOfWorkingDays]").value),
+        moneyOfTheDay: Number(
+          perDay.querySelector("input[name=moneyOfTheDay]").value
+        ),
+        personsQuantity: Number(
+          perDay.querySelector("input[name=personsQuantity]").value
+        ),
+        totalSumOfWorkingDays: Number(
+          perDay.querySelector("input[name=totalSumOfWorkingDays]").value
+        ),
       },
-    }
+    };
     const peon = document.querySelectorAll(".peon");
 
     for (let i = 0; i < peon.length; i++) {
@@ -295,17 +311,23 @@ const createSendObj = async () => {
       workPerMeter: {
         materials: [],
         difficults: [],
-        numbersOfMeters: Number(perMeter.querySelector("input[name=numbersOfMeters]").value),
-        pricePerMeter: Number(perMeter.querySelector("input[name=pricePerMeter]").value),
+        numbersOfMeters: Number(
+          perMeter.querySelector("input[name=numbersOfMeters]").value
+        ),
+        pricePerMeter: Number(
+          perMeter.querySelector("input[name=pricePerMeter]").value
+        ),
       },
-    }
+    };
 
     for (let i = 0; i < materialIt.length; i++) {
       const el = materialIt[i];
       sendMeter.workPerMeter.materials.push({
         name: el.querySelector("input[name=name]").value,
         quantity: Number(el.querySelector("input[name=quantity]").value),
-        pricePerItem: Number(el.querySelector("input[name=pricePerItem]").value),
+        pricePerItem: Number(
+          el.querySelector("input[name=pricePerItem]").value
+        ),
       });
     }
 
@@ -395,7 +417,7 @@ const sumarize = async () => {
     formValues.totalPriceNetto;
   totalPrices.querySelector("input[name=totalPriceBrutto]").value =
     formValues.totalPriceBrutto;
-  return formValues;
+  return createSendObj();
 };
 
 const onstartLoop = () => {
@@ -536,7 +558,6 @@ const onstartLoop = () => {
   const summarizeForm = document.querySelector("#summarize");
   summarizeForm.addEventListener("click", sumarize);
 
-
   const edit = document.querySelector("#edit");
   edit.addEventListener("click", async () => {
     const valuesForm = await sumarize();
@@ -589,6 +610,18 @@ const onstartLoop = () => {
     } catch (err) {
       console.error(err);
     }
+  });
+
+  const response = document.querySelector("#response");
+  const observer = new MutationObserver((mutationsList, observer) => {
+    setTimeout(() => {
+      response.innerText = "";
+    }, 5000);
+  });
+  observer.observe(response, {
+    characterData: false,
+    childList: true,
+    attributes: false,
   });
 };
 
@@ -785,9 +818,9 @@ const showQuotation = (data) => {
 
     const perMeter = document.querySelector(".perMeter");
     perMeter.querySelector("input[name=numbersOfMeters]").value =
-      data.workPerDay.numbersOfMeters;
+      data.workPerMeter.numbersOfMeters;
     perMeter.querySelector("input[name=pricePerMeter]").value =
-      data.workPerDay.pricePerMeter;
+      data.workPerMeter.pricePerMeter;
 
     const addMaterial = document.querySelector(".addMaterial");
     addMaterial.addEventListener("click", (el) => {
@@ -819,7 +852,7 @@ const showQuotation = (data) => {
     for (let i = 0; i < data.workPerMeter.difficults.length; i++) {
       const el = data.workPerMeter.difficults[i];
       const insertedElement = document.createElement("div");
-      insertedElement.className = "difficultIt";
+      insertedElement.className = "difficultIts";
       insertedElement.innerHTML = components.difficult;
       insertedElement.querySelector("input[name=name").value = el.name;
       insertedElement.querySelector("input[name=converter").value =
@@ -867,40 +900,45 @@ window.onload = async () => {
     const createNewQuotationBtn = document.querySelector("#createNewQuotation");
 
     createNewQuotationBtn.addEventListener("click", () => {
-      const formComponent = ` <form id="fullForm" method="POST" enctype="multipart/form-data">
-      <div class="mainInfo">
+      const formComponent = `<form id="fullForm" method="POST" enctype="multipart/form-data">
+      <div class="toBeCompleted">
+         <div class="workspaceForm">
 
-         <div class="el">
-            <label>name: <input type="text" name="name" placeholder="enter the name of quotation" require></label>
          </div>
+      </div>
+      <div class="summary">
+         <div class="mainInfo">
 
-         <div class="el">
-            <fieldset>
-               <legend>Method</legend>
-               <div><label><input type="radio" value="perDay" name="useMethod">perDay</label></div>
-               <div><label><input type="radio" value="perMeter" name="useMethod">perMeter</label></div>
-            </fieldset>
+            <div class="el">
+               <label>name: <input type="text" name="name" placeholder="enter the name of quotation" require></label>
+            </div>
+
+            <div class="el">
+               <fieldset>
+                  <legend>Method</legend>
+                  <div><label><input type="radio" value="perDay" name="useMethod">perDay</label></div>
+                  <div><label><input type="radio" value="perMeter" name="useMethod">perMeter</label></div>
+               </fieldset>
+            </div>
+
          </div>
+         <div class="totalPrices">
+            <div class="el formIt"><label>total materials sum price: <input type="text" name="totalMaterialsSumPrice"
+                     placeholder="0" readonly></label></div>
+            <div class="el formIt"><label>total work price: <input type="text" name="totalWorkPrice" placeholder="0"
+                     readonly></label></div>
+            <div class="el formIt"><label>total price netto: <input type="text" name="totalPriceNetto" placeholder="0"
+                     readonly></label></div>
+            <div class="el formIt"><label>total price brutto: <input type="text" name="totalPriceBrutto" placeholder="0"
+                     readonly></label></div>
+         </div>
+         <div class="formButtons">
 
-      </div>
-      <div class="workspaceForm">
-
-      </div>
-      <div class="totalPrices">
-         <div class="el formIt"><label>total materials sum price: <input type="text" name="totalMaterialsSumPrice"
-                  placeholder="0" readonly></label></div>
-         <div class="el formIt"><label>total work price: <input type="text" name="totalWorkPrice" placeholder="0"
-                  readonly></label></div>
-         <div class="el formIt"><label>total price netto: <input type="text" name="totalPriceNetto" placeholder="0"
-                  readonly></label></div>
-         <div class="el formIt"><label>total price brutto: <input type="text" name="totalPriceBrutto" placeholder="0"
-                  readonly></label></div>
-      </div>
-      <div class="formButtons">
-
-         <input type="reset" value="Clear form">
-         <input type="button" value="add quotation to database" id="acceptForm">
-         <input type="button" value="summarize" id="summarize">
+            <input type="reset" value="Clear form">
+            <input type="button" value="add quotation to database" id="acceptForm">
+            <input type="button" value="summarize" id="summarize">
+            <input type="button" value="edit" id="edit">
+         </div>
       </div>
    </form>`;
       const form = document.querySelector("#workspace");

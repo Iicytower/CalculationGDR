@@ -9,11 +9,19 @@
 
 /////////////////////////////////////////
 
+body{
+  display: flex;
+  justify-content: center;
+}
+
+
 .dashboardContainer{
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  width: 97%;
+  // padding-left: 10px;
 }
 
 .menu{
@@ -26,6 +34,7 @@
   display: flex;
   justify-content: space-between;
   padding: auto;
+  width: 100%;
 }
 
 .p5{
@@ -34,7 +43,6 @@
 
 .quotationList {
   width: 25vw;
-  padding: 5px 5px 5px 20px;
   ul {
     list-style-type: none;
     margin: 0.5vh;
@@ -76,13 +84,14 @@
 }
 
 .workspace {
-  width: 70vw;
+  width: 73vw;
   display: flex;
   padding: 5px;
+  display:flex;
+  flex-direction: row;
   .mainInfo{
     display: flex;
     padding: 5px;
-    border-bottom: 2px solid $borderColor;
 
     .el{
       flex-direction: row;
@@ -92,16 +101,25 @@
   .perDay{
     padding: 5px;
   }
-
   .perMeter{
     padding: 5px;
   }
-
   
   .totalPrices{
     
     padding: 5px;
     border-top: 2px solid $borderColor;
+  }
+  form{
+    width: 100%;
+    display:flex;
+    flex-direction: row;
+  }
+  .toBeCompleted{
+    width: 50%;
+  }
+  .summary{
+    width: 45%;
   }
 }
 .divOnBtn{
@@ -110,6 +128,12 @@
 
 .formIt{
   margin: 3px
+}
+
+#response{
+  position: absolute;
+  right: 40px;
+  bottom: 50%;
 }
 
 fieldset{
