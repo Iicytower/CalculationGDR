@@ -62,7 +62,7 @@ registerBtn.addEventListener("click", async () => {
     switch (res.status) {
       case 201:
         const datat = await res.json();
-        response.innerText = data.msg;
+        response.innerText = datat.msg;
         break;
       case 422:
         const datav = await res.json();

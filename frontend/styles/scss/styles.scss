@@ -21,7 +21,11 @@ body{
   justify-content: space-around;
   align-items: center;
   width: 97%;
-  // padding-left: 10px;
+  #response{
+    position: absolute;
+    right: 40px;
+    bottom: 50%;
+  }
 }
 
 .menu{
@@ -130,11 +134,7 @@ body{
   margin: 3px
 }
 
-#response{
-  position: absolute;
-  right: 40px;
-  bottom: 50%;
-}
+
 
 fieldset{
   margin: 5px;

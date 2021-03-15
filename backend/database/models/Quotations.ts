@@ -30,21 +30,25 @@ const QuotationSchema = new Schema({
     workPerDay: {
         works: [{
             name: String,
-            materials: [{
-                name: String,
-                quantity: Number,
-                pricePerItem: Number,
-            }],
             activities: [{
                 name: String,
+                personsQuantity: Number,
                 numberOfWorkingDays: Number,
+                moneyOfTheDay: Number,
+                materials: [{
+                    name: String,
+                    quantity: Number,
+                    pricePerItem: Number,
+                }],
+                staffCosts: Number,
+                materialsSumPrice: Number,
+
             }],
-            materialsSumPrice: Number,
+            totalMaterialsSumPrice: Number,
             sumOfWorkingDays: Number,
-            personsQuantity: Number,
+            sum: Number,
         }],
         totalSumOfWorkingDays: Number,
-        moneyOfTheDay: Number,
         personsQuantity: Number,
     },
     totalMaterialsSumPrice: Number,
