@@ -14,9 +14,18 @@ async function verifyCallback(payload: any, done: any) {
     }
 }
 
+const cookieExtractor = function(req: any) {
+    let token = null;
+    if (req && req.signedCookies)
+    {
+        token = req.signedCookies['jwToken'];
+    }
+    return token;
+};
+
 export default () => {
     const config = {
-        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
         secretOrKey: String(process.env.JWT_SECRET),
     };
 

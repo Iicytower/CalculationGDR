@@ -61,12 +61,18 @@ export default {
             const token = jwt.sign(
                 { id: usr._id },
                 String(process.env.JWT_SECRET),
-                { expiresIn: 1000 * 60 * 8 } //8hours
+                { expiresIn: 1000 * 60 * 60 * 8 } //8hours
             )
 
-            return res.status(200).json({
+            return res.status(200)
+            .cookie("jwToken", token, {
+                httpOnly: true,
+                maxAge: 1000 * 60 * 60 * 8,
+                signed: true,
+                secure: process.env.NODE_ENV === "production",
+            })
+            .json({
                 msg: 'succesfully login',
-                token,
             });
 
         } catch (err) {

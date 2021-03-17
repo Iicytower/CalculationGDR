@@ -9,6 +9,7 @@ import delQuotation from './delQuotation';
 import dowOneUserQuotation from './dowOneUserQuotation';
 
 router.get('/test', (req, res) => res.end('authrequire test endpoint \n'));
+router.post('/test', (req, res) => res.end('authrequire test endpoint \n'));
 
 router.use('/addQuotation', addQuotation)
    .use('/editQuotation', editQuotation)
