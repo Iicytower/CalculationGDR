@@ -1,19 +1,60 @@
 <template>
-  <div class="workspace"></div>
+  <div class="container">
+
+    <LoginItem />
+
+    <RegisterItem />
+    
+  </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script>
+  import LoginItem from "./Login.vue";
+  import RegisterItem from "./Register.vue";
+export default {
+  components:{
+    LoginItem,
+    RegisterItem,
+  },
 
-export default defineComponent({
-  name: "HelloWorld",
-  props: {
-    msg: String
-  }
-});
+}
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style lang="scss">
+@import "../../scss/variables.scss";
 
+
+
+.container {
+  display: flex;
+  margin: auto;
+  margin-top: 25vh;
+  padding: 2px;
+  align-items: center;
+  justify-content: space-around;
+  align-content: space-around;
+  flex-wrap: wrap;
+}
+
+.mainPiece{
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  margin: 10px;
+  align-items: center;
+}
+
+.form{
+  margin: auto;
+  padding: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.nickname, .password{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 </style>
