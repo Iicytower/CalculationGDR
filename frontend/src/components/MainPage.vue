@@ -16,14 +16,11 @@ export default {
     LoginItem,
     RegisterItem,
   },
-
 }
 </script>
 
 <style lang="scss">
 @import "../../scss/variables.scss";
-
-
 
 .container {
   display: flex;

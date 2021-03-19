@@ -62,8 +62,8 @@ export default {
             break;
         }
 
-      } catch (error) {
-        console.error(error);
+      } catch (err) {
+        console.error(err);
         alert("Something goes wrong. Please try again later.");
       }
 
