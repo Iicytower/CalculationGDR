@@ -7,13 +7,14 @@ export const fetchQuotationsList = async () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: 'include',
       }
     );
-
+    console.log(resQuotationsList);
     const quotationsList = await resQuotationsList.json();
-    return quotationsList.data;
+    return quotationsList;
   } catch (err) {
-    console.error(err);
-    alert("Something goes wrong. Please try later.");
+    console.error('err', err);
+    alert("Something goes wrong. Please try later. fetch");
   }
 };

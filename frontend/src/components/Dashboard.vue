@@ -25,10 +25,10 @@ export default {
       try {
 
         console.log('dowAllUserQuotations');
-        console.log(await fetchQuotationsList());
+        console.log('dowAllUserQuotations', await fetchQuotationsList());
       } catch (err) {
         console.error(error);
-        alert("Something goes wrong. Please try later.")
+        alert("Something goes wrong. Please try later. dash")
       }
     },
   },

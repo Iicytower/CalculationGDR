@@ -33,6 +33,7 @@ export default {
         
         const res = await fetch(`${adress}/user/login`, {
           method: "POST",
+          credentials: 'include',
           headers: {
             "Content-Type": "application/json",
           },
@@ -44,6 +45,7 @@ export default {
 
         switch (res.status) {
           case 200:
+            console.log(res);
             window.location.replace("dashboard");
             break;
           case 422:
