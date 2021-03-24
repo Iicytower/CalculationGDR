@@ -1,36 +1,32 @@
 <template>
   <div class="god">
-
     <h1>Quotation GDR app</h1>
 
     <router-view />
-
   </div>
 </template>
 
 <script lang="ts">
-  export default {
-
-  }
+export default {};
 </script>
 
 <style lang="scss">
-  @import "../scss/variables.scss";
+@import "../scss/variables.scss";
 
-  * {
-    margin: 0;
-    padding: 0;
-  }
+* {
+  margin: 0;
+  padding: 0;
+}
 
-  body {
-    background-color: $backgroundColor;
-    color: $fontColor;
-    font-family: 'Open Sans', sans-serif;
-    font-size: $mediumFontSize;
-  }
+body {
+  background-color: $backgroundColor;
+  color: $fontColor;
+  font-family: "Open Sans", sans-serif;
+  font-size: $mediumFontSize;
+}
 
-  h1{
-    margin-top: 10px;
-    text-align: center;
-  }
+h1 {
+  margin-top: 10px;
+  text-align: center;
+}
 </style>

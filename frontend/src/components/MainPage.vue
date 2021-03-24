@@ -1,22 +1,20 @@
 <template>
   <div class="container">
-
     <LoginItem />
 
     <RegisterItem />
-    
   </div>
 </template>
 
 <script>
-  import LoginItem from "./Login.vue";
-  import RegisterItem from "./Register.vue";
+import LoginItem from "./Login.vue";
+import RegisterItem from "./Register.vue";
 export default {
-  components:{
+  components: {
     LoginItem,
-    RegisterItem,
-  },
-}
+    RegisterItem
+  }
+};
 </script>
 
 <style lang="scss">
@@ -33,7 +31,7 @@ export default {
   flex-wrap: wrap;
 }
 
-.mainPiece{
+.mainPiece {
   display: flex;
   justify-content: space-around;
   padding: 10px;
@@ -41,7 +39,7 @@ export default {
   align-items: center;
 }
 
-.form{
+.form {
   margin: auto;
   padding: auto;
   display: flex;
@@ -50,7 +48,8 @@ export default {
   align-items: center;
 }
 
-.nickname, .password{
+.nickname,
+.password {
   margin-top: 10px;
   margin-bottom: 10px;
 }

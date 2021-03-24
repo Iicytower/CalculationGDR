@@ -1,19 +1,42 @@
 <template>
   <div>
-
     <div class="mainPiece registerContainer">
       <form id="register">
         <h2>Register</h2>
-        <div class="nickname"><label for="login">
-        nickname: <input required type="text" placeholder="Enter your nickname" id="registerNickname" v-model="nicknameReg">
-        </label></div>
-        <div class="password"><label for="password">
-          password: <input required type="password" placeholder="*********" id="registerPassword" v-model="passwordReg">
-        </label></div>
-        <div><input type="submit" value="Register!" id="registerFormBtn" @click.prevent="sendRegisterForm()"></div>
+        <div class="nickname">
+          <label for="login">
+            nickname:
+            <input
+              required
+              type="text"
+              placeholder="Enter your nickname"
+              id="registerNickname"
+              v-model="nicknameReg"
+            />
+          </label>
+        </div>
+        <div class="password">
+          <label for="password">
+            password:
+            <input
+              required
+              type="password"
+              placeholder="*********"
+              id="registerPassword"
+              v-model="passwordReg"
+            />
+          </label>
+        </div>
+        <div>
+          <input
+            type="submit"
+            value="Register!"
+            id="registerFormBtn"
+            @click.prevent="sendRegisterForm()"
+          />
+        </div>
       </form>
     </div>
-
   </div>
 </template>
 
@@ -21,25 +44,24 @@
 export default {
   data() {
     return {
-      nicknameReg: '',
-      passwordReg: '',
-      }
+      nicknameReg: "",
+      passwordReg: ""
+    };
   },
   methods: {
-    async sendRegisterForm(){
-      const adress = process.env.BEHOST ?? 'http://localhost:3000';
+    async sendRegisterForm() {
+      const adress = process.env.BEHOST ?? "http://localhost:3000";
       console.log("regForm");
       try {
-        
         const res = await fetch(`${adress}/user/register`, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
           },
           body: JSON.stringify({
             nickname: this.nicknameReg,
-            password: this.passwordReg,
-          }),
+            password: this.passwordReg
+          })
         });
 
         switch (res.status) {
@@ -57,19 +79,17 @@ export default {
             break;
           case 500:
             const datap = await res.json();
-            ralert(datap.msg);
+            alert(datap.msg);
             break;
           default:
             alert("Something goes wrong. Please try later.");
             break;
         }
-
       } catch (err) {
         console.error(err);
         alert("Something goes wrong. Please try again later.");
       }
-
-      },
+    }
   }
-}
+};
 </script>
