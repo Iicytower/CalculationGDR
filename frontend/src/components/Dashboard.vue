@@ -2,30 +2,46 @@
   <div>
     <div class="dashboardContainer">
 
-      <h1>This is a dashboard page</h1>
-      <a href="http://localhost:8080/">Home Page Link</a>
+      <div class="list">
+        <ul>
+          <QuotationsList v-bind:el="el" v-for="el in quotationsList.data" v-bind:key="el._id"/>
+        </ul>
+      </div>
 
-      <ul>
-        <li  class="listItem" v-for="el in quotationsList.data" v-bind:key="el._id">
+      <div class="court">
 
-          <div class="name"><h3>{{ el.name }}</h3></div>
-          <div class="dates">
-            <div class="dateItem">last update: <br> {{ getYMD(el.createdAt) }} </div>
-            <div class="dateItem">created at: <br> {{ getYMD(el.updatedAt) }} </div>
-          </div>
-          <div class="delEditBtns">
-            <button type="button" class="delete" v-bind:id="el._id">delete</button>
-          </div>  
-          
-        </li>
-      </ul>
+      </div>
 
     </div>
   </div>
 </template>
 
+<style lang="scss">
+
+  ul {
+    list-style-type: none;
+    margin: 0.5vh;
+    padding: 5px;
+  }
+
+  .dashboardContainer{
+    display: flex;
+    flex-direction: raw;
+    justify-content: space-around;
+    align-items: center;
+    width: 97%;
+    .list{
+      width: 20vw;
+    }
+    .court{
+      width: 80vw;
+    }
+  }
+</style>
+
 <script>
   import { fetchQuotationsList } from "../apiRequests/dowAllUserQuotations";
+  import QuotationsList from './dashboardCom/QuotationsList.vue';
 export default {
   data() {
     return {
@@ -38,22 +54,16 @@ export default {
   methods: {
     async currentUserQuotationsList(){
       try {
-        const quotationsList = await fetchQuotationsList()
-        console.log('dowAllUserQuotations');
-        console.log('dowAllUserQuotations', quotationsList);
-        this.quotationsList = quotationsList;
-
-
+        this.quotationsList = await fetchQuotationsList();
       } catch (err) {
-        console.error(error);
-        alert("Something goes wrong. Please try later. dash")
+        console.error(err);
+        alert("Something goes wrong. Please try later.")
       }
     },
-    getYMD(date){
-      const d = new Date(date);
-      return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`
-    },
   },
+  components: {
+    QuotationsList,
+  }
 }
 </script>
 
