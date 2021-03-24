@@ -1,19 +1,19 @@
 <template>
-  <div>
-    <div class="dashboardContainer">
-      <div class="list">
-        <ul>
-          <QuotationsList
-            v-bind:el="el"
-            v-for="el in quotationsList.data"
-            v-bind:key="el._id"
-          />
-        </ul>
-      </div>
+  <div class="dashboardContainer">
+    <div class="list">
+      <ul>
+        <QuotationsList
+          v-bind:el="el"
+          v-for="el in quotationsList.data"
+          v-bind:key="el._id"
+        />
+      </ul>
+    </div>
 
-      <div class="court">
+    <div class="court">
+      <form>
         <Court />
-      </div>
+      </form>
     </div>
   </div>
 </template>
@@ -29,13 +29,14 @@ ul {
   display: flex;
   flex-direction: raw;
   justify-content: space-around;
-  align-items: center;
-  width: 97%;
+  padding: 10px;
   .list {
     width: 20vw;
   }
   .court {
     width: 80vw;
+    display: flex;
+    flex-direction: row;
   }
 }
 </style>
