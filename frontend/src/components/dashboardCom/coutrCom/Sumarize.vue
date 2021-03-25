@@ -21,6 +21,7 @@
                 type="radio"
                 value="perDay"
                 name="useMethod"
+                @click="emitMethodVariable"
               />perDay</label
             >
           </div>
@@ -30,6 +31,7 @@
                 type="radio"
                 value="perMeter"
                 name="useMethod"
+                @click="emitMethodVariable"
               />perMeter</label
             >
           </div>
@@ -86,7 +88,20 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      method: '',
+    };
+  },
+  methods: {
+    emitMethodVariable(val){
+
+      const useMethod = document.querySelectorAll('input[name=useMethod');
+      for (let i = 0; i < useMethod.length; i++) {
+        const el = useMethod[i];
+        if (el.checked) this.method = el.value;
+      }
+      this.$emit('methodChenged', this.method);
+    }
   }
 };
 </script>

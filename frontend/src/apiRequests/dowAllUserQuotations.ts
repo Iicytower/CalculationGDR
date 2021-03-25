@@ -10,7 +10,6 @@ export const fetchQuotationsList = async () => {
         credentials: "include"
       }
     );
-    console.log(resQuotationsList);
     const quotationsList = await resQuotationsList.json();
     return quotationsList;
   } catch (err) {

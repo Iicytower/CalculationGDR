@@ -1,11 +1,11 @@
 <template>
   <div class="court">
     <div class="calculator">
-      <Calculator />
+      <Calculator v-bind:method='method' />
     </div>
 
     <div class="sumarize">
-      <Sumarize />
+      <Sumarize @methodChenged=setMethodValue />
     </div>
   </div>
 </template>
@@ -25,7 +25,14 @@ import Sumarize from "./coutrCom/Sumarize.vue";
 import Calculator from "./coutrCom/Calculator.vue";
 export default {
   data() {
-    return {};
+    return {
+      method: '',
+    };
+  },
+  methods: {
+    setMethodValue(value){
+      this.method = value;
+    }
   },
   components: {
     Sumarize,
