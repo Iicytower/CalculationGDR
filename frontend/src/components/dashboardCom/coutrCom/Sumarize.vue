@@ -89,18 +89,17 @@
 export default {
   data() {
     return {
-      method: '',
+      method: ""
     };
   },
   methods: {
-    emitMethodVariable(val){
-
-      const useMethod = document.querySelectorAll('input[name=useMethod');
+    emitMethodVariable() {
+      const useMethod = document.querySelectorAll("input[name=useMethod");
       for (let i = 0; i < useMethod.length; i++) {
         const el = useMethod[i];
         if (el.checked) this.method = el.value;
       }
-      this.$emit('methodChenged', this.method);
+      this.$emit("methodChenged", this.method);
     }
   }
 };
